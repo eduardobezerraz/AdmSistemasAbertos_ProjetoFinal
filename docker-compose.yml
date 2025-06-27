@@ -1,0 +1,8 @@
+services:
+  dns:
+    build:
+      context: ./dns
+      dockerfile: Dockerfile
+    container_name: dns 
+    ports:
+      - "53:53/udp"
