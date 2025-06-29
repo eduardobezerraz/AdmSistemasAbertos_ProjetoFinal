@@ -10,11 +10,15 @@ $TTL    604800
                          604800 )       ; Negative Cache TTL
 ; Nameserver
         IN      NS      ns
-ns      IN      A       127.0.0.1
-@       IN      A       127.0.0.1
+ns      IN      A       192.168.1.65
+@       IN      A       192.168.1.65
+www     IN      A       192.168.1.65
+
 ; Hosts
 portal     IN     CNAME    www
-webmail    IN     CNAME    www
-cliente1   IN     CNAME    www
-cliente2   IN     CNAME    www
-cliente3   IN     CNAME    www   
+
+
+;webmail    IN     CNAME    www
+;cliente1   IN     CNAME    www
+;cliente2   IN     CNAME    www
+;cliente3   IN     CNAME    www   
