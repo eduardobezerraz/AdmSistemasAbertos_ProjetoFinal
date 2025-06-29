@@ -3,14 +3,20 @@ services:
     build:
       context: ./dns
       dockerfile: Dockerfile
-    container_name: dns 
+    container_name: dns
     ports:
       - "53:53/udp"
 
-proxy:
-  build: 
-    context: ./proxy
-    dockerfile: Dockerfile
-  container_name: proxy
-  ports:
-    - "80:80/tcp"
+  portal:
+    build:
+      context: ./portal
+      dockerfile: Dockerfile
+    container_name: portal
+
+  proxy:
+    build: 
+      context: ./proxy
+      dockerfile: Dockerfile
+    container_name: proxy
+    ports:
+      - "80:80/tcp"
