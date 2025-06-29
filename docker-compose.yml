@@ -12,7 +12,6 @@ services:
       context: ./portal
       dockerfile: Dockerfile
     container_name: portal
-
   proxy:
     build: 
       context: ./proxy
