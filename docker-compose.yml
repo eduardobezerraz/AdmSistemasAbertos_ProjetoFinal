@@ -6,3 +6,11 @@ services:
     container_name: dns 
     ports:
       - "53:53/udp"
+
+proxy:
+  build: 
+    context: ./proxy
+    dockerfile: Dockerfile
+  container_name: proxy
+  ports:
+    - "80:80/tcp"

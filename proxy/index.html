@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Reverso - ISP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .service-icon {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+        }
+        .wave-shape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        .wave-shape svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 150px;
+        }
+        .wave-shape .shape-fill {
+            fill: #FFFFFF;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="relative overflow-hidden">
+        <!-- Header with gradient background -->
+        <header class="gradient-bg text-white pt-16 pb-32 relative">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">Bem-vindo ao Proxy Reverso do ISP</h1>
+                <p class="text-xl md:text-2xl opacity-90 mb-8 animate-fade-in delay-100">Acesse os serviços disponíveis de forma rápida e segura</p>
+                
+                <div class="absolute bottom-0 left-0 w-full">
+                    <div class="wave-shape">
+                        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+                            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+                            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,942.2,90.86c56.12-4.38,92.47-28.9,116.92-51.5,28.84-25.6,48.44-71.26,60.65-117.25C1149.24,5.62,1207.67,0,1360,0V0Z" class="shape-fill"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="container mx-auto px-6 -mt-20 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Webmail Card -->
+                <div class="service-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="service-icon bg-blue-100 p-3 rounded-full text-blue-600">
+                                <i class="fas fa-envelope text-2xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold ml-4">Webmail</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Acesse seu e-mail corporativo de qualquer lugar com segurança.</p>
+                        <a href="http://webmail" class="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300">
+                            Acessar <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Portal ISP Card -->
+                <div class="service-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="service-icon bg-purple-100 p-3 rounded-full text-purple-600">
+                                <i class="fas fa-network-wired text-2xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold ml-4">Portal do ISP</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Central de serviços e configurações do seu provedor de internet.</p>
+                        <a href="http://portal" class="inline-block px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300">
+                            Acessar <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cliente 1 Card -->
+                <div class="service-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="service-icon bg-green-100 p-3 rounded-full text-green-600">
+                                <i class="fas fa-user-tie text-2xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold ml-4">Cliente 1</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Acesso dedicado aos serviços do Cliente 1 com recursos exclusivos.</p>
+                        <a href="http://cliente1" class="inline-block px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300">
+                            Acessar <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cliente 2 Card -->
+                <div class="service-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="service-icon bg-yellow-100 p-3 rounded-full text-yellow-600">
+                                <i class="fas fa-user-tie text-2xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold ml-4">Cliente 2</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Acesso dedicado aos serviços do Cliente 2 com recursos exclusivos.</p>
+                        <a href="http://cliente2" class="inline-block px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors duration-300">
+                            Acessar <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cliente 3 Card -->
+                <div class="service-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="service-icon bg-red-100 p-3 rounded-full text-red-600">
+                                <i class="fas fa-user-tie text-2xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold ml-4">Cliente 3</h2>
+                        </div>
+                        <p class="text-gray-600 mb-6">Acesso dedicado aos serviços do Cliente 3 com recursos exclusivos.</p>
+                        <a href="http://cliente3" class="inline-block px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-300">
+                            Acessar <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <h3 class="text-xl font-bold">Proxy Reverso ISP</h3>
+                        <p class="text-gray-400">Soluções de conectividade avançada</p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400">
+                    <p>&copy; 2023 Proxy Reverso ISP. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Simple animation for cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.5s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 200 + (index * 100));
+            });
+        });
+
+        // Show more services modal
+        function showMoreServices() {
+            alert('Em breve mais serviços estarão disponíveis!');
+        }
+    </script>
+</body>
+</html>
