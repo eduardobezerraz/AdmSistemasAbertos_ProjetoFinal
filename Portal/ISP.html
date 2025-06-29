@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetLink Provedor - Soluções em Internet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+        }
+        .login-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .login-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.13);
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+        .login-btn:hover::after {
+            left: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-sans flex flex-col">
+    <!-- Header -->
+    <header class="py-6 px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-bold float-animation">
+                    NL
+                </div>
+                <h1 class="text-3xl font-bold gradient-text">NetLink Provedor</h1>
+            </div>
+            <button class="login-btn bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-2 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300">
+                Área do Cliente
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <section class="mb-16 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Soluções de Internet <span class="gradient-text">Premium</span></h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Conectando seu negócio ao futuro com tecnologia de ponta e atendimento personalizado.
+            </p>
+        </section>
+
+        <!-- Services Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <!-- DNS Card -->
+            <div class="card-hover bg-white rounded-xl p-6 shadow-md border-l-4 border-blue-500 hover:border-purple-500">
+                <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-4 text-2xl">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-gray-800">DNS Premium</h3>
+                <p class="text-gray-600">Servidores DNS de alta disponibilidade e baixa latência para garantir a melhor performance.</p>
+            </div>
+
+            <!-- Email Card -->
+            <div class="card-hover bg-white rounded-xl p-6 shadow-md border-l-4 border-green-500 hover:border-teal-500">
+                <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-4 text-2xl">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-gray-800">E-mail Corporativo</h3>
+                <p class="text-gray-600">Soluções completas de e-mail profissional com alta capacidade e segurança avançada.</p>
+            </div>
+
+            <!-- Webmail Card -->
+            <div class="card-hover bg-white rounded-xl p-6 shadow-md border-l-4 border-yellow-500 hover:border-orange-500">
+                <div class="w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 mb-4 text-2xl">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-gray-800">Webmail Avançado</h3>
+                <p class="text-gray-600">Interface web moderna com recursos avançados de gerenciamento e organização de e-mails.</p>
+            </div>
+
+            <!-- Proxy Card -->
+            <div class="card-hover bg-white rounded-xl p-6 shadow-md border-l-4 border-red-500 hover:border-pink-500">
+                <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-4 text-2xl">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-gray-800">Proxy Reverso SSL</h3>
+                <p class="text-gray-600">Proteção e balanceamento de carga com certificados SSL dedicados para máxima segurança.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">Contato</h3>
+                    <p class="text-gray-300"><i class="fas fa-phone-alt mr-2"></i> (11) 4002-8922</p>
+                    <p class="text-gray-300"><i class="fas fa-envelope mr-2"></i> contato@netlinkprovedor.com.br</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-purple-600 transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-blue-400 transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-pink-600 transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white hover:bg-blue-700 transition-colors">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400">
+                <p>&copy; 2023 NetLink Provedor. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation for cards on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card-hover');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+            
+            // Login button effect
+            const loginBtn = document.querySelector('.login-btn');
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Área de login simulada - Esta é apenas uma demonstração visual.');
+            });
+        });
+    </script>
+</body>
+</html>
