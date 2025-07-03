@@ -20,3 +20,15 @@ services:
     container_name: proxy
     ports:
       - "80:80/tcp"
+  mail:
+    build:
+      context: ./email
+      dockerfile: Dockerfile
+    image: email
+    container_name: email
+    hostname: mail.asa.br #? (acho que tem que mudar isso)
+    restart: always
+    tty: true
+    ports:
+      - "25:25/tcp"
+      - "587:587/tcp"
