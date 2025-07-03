@@ -7,28 +7,55 @@ services:
     ports:
       - "53:53/udp"
       - "53:53/tcp"
+    networks:
+      - ispnet
 
   portal:
     build:
       context: ./portal
       dockerfile: Dockerfile
     container_name: portal
+    networks:
+      - ispnet
+
   proxy:
-    build: 
+    build:
       context: ./proxy
       dockerfile: Dockerfile
     container_name: proxy
     ports:
       - "80:80/tcp"
+    networks:
+      - ispnet
+
   mail:
     build:
       context: ./email
       dockerfile: Dockerfile
     image: email
     container_name: email
-    hostname: mail.asa.br #? (acho que tem que mudar isso)
+    hostname: mail.asa.br
     restart: always
     tty: true
     ports:
       - "25:25/tcp"
       - "587:587/tcp"
+    networks:
+      - ispnet
+
+  webmail:
+    image: roundcube/roundcubemail:latest
+    container_name: webmail
+    depends_on:
+      - mail
+    environment:
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail
+      - ROUNDCUBEMAIL_SMTP_SERVER=mail
+    ports:
+      - "8081:80/tcp"
+    networks:
+      - ispnet
+
+networks:
+  ispnet:
+    driver: bridge

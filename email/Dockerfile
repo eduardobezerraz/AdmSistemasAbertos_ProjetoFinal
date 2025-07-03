@@ -6,7 +6,8 @@ RUN apt upgrade -y
 
 RUN apt install postfix vim dnsutils iputils-ping telnet -y
 
-COPY main.cf /etc/postfix
+COPY postfix/main.cf /etc/postfix/main.cf
+
 
 # Add User
 #RUN useradd -c 'User Bob' -m -s /bin/false bob
