@@ -1,18 +1,28 @@
 FROM ubuntu:20.04
 
-RUN apt update
+ENV DEBIAN_FRONTEND=noninteractive
 
+RUN apt update
 RUN apt upgrade -y
 
-RUN apt install postfix vim dnsutils iputils-ping telnet -y
+# Instala postfix, dovecot e syslog-ng
+RUN apt install -y postfix dovecot-imapd dovecot-pop3d syslog-ng
 
-COPY postfix/main.cf /etc/postfix/main.cf
+# Copia arquivos de configuração
+COPY main.cf /etc/postfix/
+COPY dovecot.conf /etc/dovecot/conf.d/
 
+# Criação de usuários
+RUN useradd -m joao_marcos
+RUN useradd -m joao_victor
+RUN useradd -m jose_eduardo
+RUN useradd -m redes
 
-# Add User
-#RUN useradd -c 'User Bob' -m -s /bin/false bob
+# Definição de senhas
+RUN echo "joao_marcos:redes" | chpasswd
+RUN echo "joao_victor:redes" | chpasswd
+RUN echo "jose_eduardo:redes" | chpasswd
+RUN echo "redes:redes" | chpasswd
 
-# Set user passord
-#RUN echo -e "pwd123" | passwd bob
-
-CMD ["postfix", "start-fg"]
+# Inicialização dos serviços
+CMD ["sh", "-c", "service syslog-ng start ; service postfix start ; service dovecot start ; tail -F /var/log/mail.log"]

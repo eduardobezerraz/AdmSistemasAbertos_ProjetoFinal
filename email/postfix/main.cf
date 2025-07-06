@@ -1,0 +1,50 @@
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name. The Debian default
+# is /etc/mailname.
+#myorigin = /etc/mailname
+
+myorigin = sonserina.br
+
+
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu) IFRN/ASA
+biff = no
+
+append_dot_mydomain = no
+
+readme_directory = no
+
+# Compatibility level
+compatibility_level = 2
+
+# TLS settings
+smtpd_tls_cert_file = /etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file = /etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_security_level = may
+
+smtp_tls_CApath = /etc/ssl/certs
+smtp_tls_security_level = may
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+# SASL AUTH via Dovecot
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+
+# Restrição de envio: exige autenticação
+smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, defer_unauth_destination
+
+myhostname = mail.asa.br
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+mydestination = $myhostname, $myorigin, localhost, localhost.localdomain
+relayhost = 
+mynetworks = 172.18.0.0/16, 127.0.0.0/8, [::ffff:127.0.0.0]/104, [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = ipv4
+home_mailbox = Maildir/
