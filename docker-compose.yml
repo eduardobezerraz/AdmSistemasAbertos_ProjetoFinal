@@ -61,6 +61,12 @@ services:
       - "587:587/tcp"
       - "465:465/tcp"  # SMTPS
       - "993:993/tcp"  # IMAPS
+    volumes:
+      # Compartilhando os mesmos certificados do proxy
+      - ./proxy/ssl/sonserina.crt:/etc/ssl/certs/sonserina.crt:ro
+      - ./proxy/ssl/sonserina.key:/etc/ssl/private/sonserina.key:ro
+      # Parâmetros DH para maior segurança
+      - ./proxy/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
     networks:
       - ispnet
 
@@ -74,6 +80,16 @@ services:
       - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.sonserina.br
       - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.sonserina.br
       - ROUNDCUBEMAIL_DEFAULT_PORT=993
+      # Configurações adicionais para SSL
+      - ROUNDCUBEMAIL_IMAP_HOST=ssl://mail.sonserina.br
+      - ROUNDCUBEMAIL_IMAP_PORT=993
+      - ROUNDCUBEMAIL_SMTP_PORT=587
+      - ROUNDCUBEMAIL_SMTP_AUTH_ON=true
+      # Ignorar verificação de certificado autoassinado (se necessário)
+      - ROUNDCUBEMAIL_TLS_SKIP_VERIFY=true
+    volumes:
+      # Opcional: Configuração personalizada do Roundcube
+      - ./webmail/config.inc.php:/usr/src/roundcubemail/config/config.inc.php:ro
     networks:
       - ispnet
 
