@@ -23,9 +23,9 @@ if (-not $ipAddress) {
     exit 1
 }
 
-# Define o DNS com cmdlet PowerShell moderno
-Write-Host "Configurando DNS para 192.168.0.8 na interface $interfaceName..."
-Set-DnsClientServerAddress -InterfaceAlias $interfaceName -ServerAddresses "192.168.0.8"
+# Define o DNS com o IP da interface encontrada
+Write-Host "Configurando DNS para $ipAddress na interface $interfaceName..."
+Set-DnsClientServerAddress -InterfaceAlias $interfaceName -ServerAddresses $ipAddress
 
 # Desativar IPv6 na interface
 Write-Host "Desativando IPv6 na interface $interfaceName..."
