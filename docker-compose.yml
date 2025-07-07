@@ -23,23 +23,44 @@ services:
       context: ./proxy
       dockerfile: Dockerfile
     container_name: proxy
+
     ports:
       - "80:80/tcp"
+      - "443:443/tcp"
+
+    volumes:
+      # Certificados SSL
+      - ./proxy/ssl/sonserina.crt:/etc/nginx/ssl/sonserina.crt:ro
+      - ./proxy/ssl/sonserina.key:/etc/nginx/ssl/sonserina.key:ro
+
+      # Seu index.html e 404.html
+      - ./proxy/index.html:/usr/share/nginx/html/index.html:ro
+      - ./proxy/404.html:/usr/share/nginx/html/404.html:ro   # se existir
+
+      # Configuração customizada do nginx
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
+
     networks:
       - ispnet
-
+    depends_on:
+      - portal
+      - webmail
+      
   mail:
     build:
       context: ./email
       dockerfile: Dockerfile
     image: email
     container_name: email
-    hostname: mail.asa.br
+    hostname: mail.sonserina.br  # Domínio corrigido
     restart: always
-    tty: true
+    environment:
+      - DOMAIN=sonserina.br  # Variável de domínio
     ports:
       - "25:25/tcp"
       - "587:587/tcp"
+      - "465:465/tcp"  # SMTPS
+      - "993:993/tcp"  # IMAPS
     networks:
       - ispnet
 
@@ -47,12 +68,12 @@ services:
     image: roundcube/roundcubemail:latest
     container_name: webmail
     depends_on:
-      - mail
+      mail:
+        condition: service_started
     environment:
-      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail
-      - ROUNDCUBEMAIL_SMTP_SERVER=mail
-    ports:
-      - "8081:80/tcp"
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.sonserina.br
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.sonserina.br
+      - ROUNDCUBEMAIL_DEFAULT_PORT=993
     networks:
       - ispnet
 

@@ -45,13 +45,112 @@ Abaixo, a representação da arquitetura da rede do ISP implementada no projeto:
 
 ## 📂 Estrutura de Diretórios
 
+```bash
+.
+├── docker-compose.yml
+├── README.md
+├── startup.ps1
+├── shutdown.ps1
+│
+├── DNS
+│   ├── Dockerfile
+│   ├── named.conf.local
+│   └── sonserina.br
+│
+├── docs
+│   └── arquitetura-isp.png
+│
+├── email
+│   ├── Dockerfile
+│   ├── dovecot
+│   │   └── dovecot.conf
+│   ├── postfix
+│   │   └── main.cf
+│   └── scripts
+│       └── init.sh
+│
+├── Portal
+│   ├── Dockerfile
+│   └── index.html
+│
+├── proxy
+│   ├── 404.html
+│   ├── default.conf
+│   ├── Dockerfile
+│   ├── index.html
+│   └── ssl
+│       ├── sonserina.crt
+│       └── sonserina.key
+│
+├── scripts
+│   ├── DNSconfig.ps1
+│   ├── EnableDHCP_Ipv6.ps1
+│   ├── generate-ssl.ps1
+│   └── generate-ssl.sh
+└─
+```
+### Descrição dos Diretórios
+
+- **DNS**: Configurações do servidor DNS (Bind9).
+- **docs**: Documentação e diagramas do projeto.
+- **email**: Serviços de e-mail (Postfix + Dovecot).
+- **Portal**: Páginas web estáticas.
+- **proxy**: Configurações do proxy reverso (Nginx).
+- **scripts**: Scripts auxiliares para configuração e automação.
+
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Pré-requisitos
 
-- Docker & Docker Compose  
-- Bind9  
-- Postfix + Dovecot  
-- Nginx  
-- Let's Encrypt (Certbot)    
-- GitHub Projects (Kanban + Planejamento)  
+- Docker e Docker Compose instalados
+  - [Instruções para Windows](https://docs.docker.com/desktop/install/windows-install/)
+  - [Instruções para Linux](https://docs.docker.com/engine/install/)
+- PowerShell (Windows) ou PowerShell Core (Linux/Mac)
+- Acesso de administrador/root
+
+### Como Executar
+
+1. Abra o PowerShell com privilégios administrativos (Executar como Administrador).
+
+2. Navegue até o diretório onde os scripts estão salvos:
+
+   
+
+3. Execute o script de inicialização com o comando: 
+```powershell
+powershell -ExecutionPolicy Bypass -File .\startup.ps1
+```
+#### O que acontece:
+<p align="center">
+  <img src="./docs/fluxo_startup.png" alt="Arquitetura da Rede do ISP" width="500"/>
+</p>
+
+      ✅ Verificação de privilégios de administrador
+      
+      🔒 Geração automática de certificados SSL (se necessário)
+      
+      🐳 Inicialização dos containers Docker com --force-recreate
+      
+      🌐 Configuração automática do DNS
+      
+      📊 Exibição do status final dos serviços
+
+
+
+4. Execute o script de finalização com o comando: 
+```powershell
+powershell -ExecutionPolicy Bypass -File .\shutdown.ps1
+```
+#### O que acontece:
+<p align="center">
+  <img src="./docs/fluxo_shutdown.png" alt="Arquitetura da Rede do ISP" width="500"/>
+</p>
+
+      🛑 Contêineres Docker são parados
+      
+      ♻️ Configurações DHCP são restauradas
+      
+      🌐 Configurações de rede originais são reaplicadas
+      
+      ✅ Confirmação de desligamento completo
+
