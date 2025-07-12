@@ -59,6 +59,7 @@ services:
       - ./proxy/ssl/sonserina.crt:/etc/ssl/certs/sonserina.crt:ro
       - ./proxy/ssl/sonserina.key:/etc/ssl/private/sonserina.key:ro
       - ./proxy/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
+      - maildata:/maildata
     networks:
       - ispnet
 
@@ -67,18 +68,8 @@ services:
     container_name: webmail
     depends_on:
       - mail
-    environment:
-      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail:993
-      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail:587
-      - ROUNDCUBEMAIL_DEFAULT_PORT=993
-      - ROUNDCUBEMAIL_IMAP_HOST=ssl://mail
-      - ROUNDCUBEMAIL_IMAP_PORT=993
-      - ROUNDCUBEMAIL_SMTP_PORT=587
-      - ROUNDCUBEMAIL_SMTP_AUTH_ON=true
-      - ROUNDCUBEMAIL_TLS_SKIP_VERIFY=true
-      - ROUNDCUBEMAIL_DB_TYPE=sqlite
     volumes:
-      - roundcube_data:/var/roundcube
+      - ./webmail/config/config.inc.php:/var/roundcube/config/config.inc.php:ro
     networks:
       - ispnet
 
@@ -88,4 +79,6 @@ networks:
 
 volumes:
   roundcube_data:
+    driver: local
+  maildata:
     driver: local

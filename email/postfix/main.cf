@@ -1,43 +1,18 @@
-# /etc/postfix/main.cf
+# Local Maildir
+home_mailbox = Maildir/
 
-myhostname = mail.sonserina.br
-mydomain   = sonserina.br
-myorigin   = $mydomain
-
-smtpd_banner = $myhostname ESMTP $mail_name
-biff = no
-
-append_dot_mydomain = no
-readme_directory = no
-
-compatibility_level = 2
-
-# TLS
-smtpd_tls_cert_file = /etc/ssl/certs/sonserina.crt
-smtpd_tls_key_file  = /etc/ssl/private/sonserina.key
-smtpd_tls_security_level = may
-smtp_tls_CApath = /etc/ssl/certs
-smtp_tls_security_level = may
-
-# SASL via dovecot
+# SASL via Dovecot
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
-smtpd_sasl_security_options = noanonymous
 broken_sasl_auth_clients = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
 
-# Permitir envio apenas autenticado ou de redes confiáveis
-smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, defer_unauth_destination
-
-# Destino e interfaces
-mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+# Outras configurações básicas
+domain = sonserina.br
+myhostname = mail.sonserina.br
+mydestination = $myhostname, localhost
 inet_interfaces = all
-inet_protocols  = ipv4
-mynetworks      = 172.18.0.0/16, 127.0.0.0/8
-
-# Entrega em Maildir
-home_mailbox = Maildir/
-mailbox_size_limit = 0
-recipient_delimiter = +
-alias_maps = hash:/etc/aliases
-alias_database = hash:/etc/aliases
+inet_protocols = ipv4
+mynetworks = 127.0.0.0/8

@@ -1,23 +1,27 @@
-FROM ubuntu:20.04
+FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update && apt upgrade -y \
- && apt install -y postfix dovecot-imapd dovecot-pop3d syslog-ng mailutils \
- && rm -rf /var/lib/apt/lists/*
+# 1) Instala pacotes necessários
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends \
+      postfix \
+      dovecot-core dovecot-imapd dovecot-pop3d \
+      syslog-ng && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copia configs
-COPY postfix/main.cf /etc/postfix/main.cf
-COPY dovecolt/dovecot.conf /etc/dovecot/conf.d/10-mail.conf
+# 2) Copia configurações
+COPY conf.d/10-auth.conf.ext    /etc/dovecot/conf.d/10-auth.conf.ext
+COPY conf.d/10-mail.conf        /etc/dovecot/conf.d/10-mail.conf
+COPY conf.d/10-master.conf      /etc/dovecot/conf.d/10-master.conf
 COPY dovecolt/dovecot.conf /etc/dovecot/dovecot.conf
 
-# Cria usuários e seus Maildirs
-RUN for u in joao_marcos joao_victor jose_eduardo redes; do \
-      useradd -m -s /usr/sbin/nologin "$u" && \
-      echo "$u:redes" | chpasswd && \
-      mkdir -p /home/"$u"/Maildir/{cur,new,tmp} && \
-      chown -R "$u":"$u" /home/"$u"/Maildir ; \
-    done
+COPY postfix/main.cf            /etc/postfix/main.cf
 
-EXPOSE 25 465 587 993
+# 3) Copia e torna executável o init
+COPY scripts/init.sh /init.sh
+RUN chmod +x /init.sh
 
-CMD ["sh", "-c", "service syslog-ng start && service postfix start && service dovecot start && tail -F /var/log/mail.log"]
+# 4) Declara volumes para certificados e dados
+VOLUME ["/etc/ssl/certs", "/etc/ssl/private", "/maildata"]
+
+ENTRYPOINT ["/init.sh"]
