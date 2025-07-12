@@ -6,10 +6,9 @@ RUN apt update && apt upgrade -y \
  && rm -rf /var/lib/apt/lists/*
 
 # Copia configs
-COPY main.cf /etc/postfix/main.cf
-COPY dovecot.conf /etc/dovecot/conf.d/10-mail.conf
-COPY dovecot-auth.conf.ext /etc/dovecot/conf.d/10-auth.conf.ext
-COPY dovecot-master.conf /etc/dovecot/conf.d/10-master.conf
+COPY postfix/main.cf /etc/postfix/main.cf
+COPY dovecolt/dovecot.conf /etc/dovecot/conf.d/10-mail.conf
+COPY dovecolt/dovecot.conf /etc/dovecot/dovecot.conf
 
 # Cria usuários e seus Maildirs
 RUN for u in joao_marcos joao_victor jose_eduardo redes; do \
