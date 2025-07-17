@@ -1,18 +1,62 @@
-# Local Maildir
-home_mailbox = Maildir/
 
-# SASL via Dovecot
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name.  The Debian default
+# is /etc/mailname.
+
+# myorigin = /etc/mailname
+myorigin = $myhostname
+
+# smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+smtpd_banner = ASA ESMTP Server
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+
+readme_directory = no
+
+# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 3.6 on
+# fresh installs.
+compatibility_level = 3.6
+
+
+
+# TLS parameters
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_security_level=may
+
+smtp_tls_CApath=/etc/ssl/certs
+smtp_tls_security_level=may
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+# myhostname = localhost
+myhostname = domail.domeio.com
+mydomain = domeio.com
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+#mydestination = $myhostname, localhost, localhost.localdomain, localhost
+mydestination = $myhostname, $mydomain, localhost, localhost.localdomain, localhost
+#relayhost = [domeio.com]:25
+mynetworks = 127.0.0.0/8 10.0.0.0/8 172.19.0.0/16 [::ffff:127.0.0.0]/104 [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = ipv4
+
+# Delivery to Maildir format
+home_mailbox = Maildir/
+smtpd_sasl_auth_enable = yes
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
-smtpd_sasl_auth_enable = yes
+smtpd_sasl_authenticated_header = yes
 broken_sasl_auth_clients = yes
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain = $myhostname
-
-# Outras configurações básicas
-domain = sonserina.br
-myhostname = mail.sonserina.br
-mydestination = $myhostname, localhost
-inet_interfaces = all
-inet_protocols = ipv4
-mynetworks = 127.0.0.0/8

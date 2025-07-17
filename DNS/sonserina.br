@@ -18,10 +18,16 @@ ns      IN      A       192.168.0.9
 www     IN      A       192.168.0.9      ; www.sonserina.br
 
 ; Serviços via CNAME para o apex
-portal  IN      CNAME   @               ; portal.sonserina.br → 192.168.0.9
-webmail IN      CNAME   @               ; webmail.sonserina.br → 192.168.0.9
-proxy IN    CNAME   @               ; sonserina.sonserina.br → 192.168.0.9
+portal      IN      CNAME   @               ; portal.sonserina.br → 192.168.0.9
+webmail     IN      CNAME   @               ; webmail.sonserina.br → 192.168.0.9
+proxy       IN      CNAME   @               ; sonserina.sonserina.br → 192.168.0.9
+
+; Cliente 1 - Novo portal
+cliente1             IN      A       192.168.0.9
+portal.cliente1      IN      CNAME   cliente1
+hotsite.cliente1     IN      CNAME   cliente1
+sign.cliente1        IN      CNAME   cliente1
+
 ; (se quiser reativar depois)
-;cliente1   IN     CNAME    @
 ;cliente2   IN     CNAME    @
 ;cliente3   IN     CNAME    @

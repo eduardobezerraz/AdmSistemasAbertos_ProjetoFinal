@@ -3,7 +3,11 @@
   Gera certificado SSL autoassinado para o projeto ASAPF
 #>
 
-param([switch]$SkipInstall)
+param(
+    [string]$certName = "sonserina",
+    [string]$domain = "proxy.sonserina.br",
+    [switch]$SkipInstall
+)
 
 # Verifica se é admin
 if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
@@ -12,9 +16,7 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 }
 
 # Configurações
-$certName = "sonserina"
-$domain = "proxy.sonserina.br"
-$sslFolder = "$PWD\..\proxy\ssl"  # Caminho atualizado para ../proxy/ssl
+$sslFolder = "$PWD\..\proxy\ssl"
 $daysValid = 365
 $keySize = 2048
 
@@ -24,7 +26,7 @@ if (-NOT (Test-Path $sslFolder)) {
 }
 
 # 2. Gera certificado
-Write-Host "Gerando certificado SSL..."
+Write-Host "Gerando certificado SSL para $domain..."
 openssl req -x509 -nodes -days $daysValid -newkey rsa:$keySize `
     -keyout "$sslFolder\$certName.key" -out "$sslFolder\$certName.crt" `
     -subj "/CN=$domain/O=ASAPF/C=BR"
@@ -37,7 +39,7 @@ if (-NOT (Test-Path "$sslFolder\$certName.crt")) {
 # 3. Instala certificado (opcional)
 if (-NOT $SkipInstall) {
     try {
-        Write-Host "Instalando certificado..."
+        Write-Host "Instalando certificado no repositório de autoridades confiáveis..."
         $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
         $cert.Import("$sslFolder\$certName.crt")
         

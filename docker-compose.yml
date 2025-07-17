@@ -20,6 +20,16 @@ services:
     networks:
       - ispnet
 
+  cliente1_portal:
+    build:
+      context: ./cliente1-portal
+      dockerfile: Dockerfile
+    container_name: cliente1_portal
+    ports:
+      - "8080:80"
+    networks:
+      - ispnet
+
   proxy:
     build:
       context: ./proxy
@@ -31,6 +41,8 @@ services:
     volumes:
       - ./proxy/ssl/sonserina.crt:/etc/nginx/ssl/sonserina.crt:ro
       - ./proxy/ssl/sonserina.key:/etc/nginx/ssl/sonserina.key:ro
+      - ./proxy/ssl/portal.cliente1.crt:/etc/nginx/ssl/portal.cliente1.crt:ro
+      - ./proxy/ssl/portal.cliente1.key:/etc/nginx/ssl/portal.cliente1.key:ro
       - ./proxy/index.html:/usr/share/nginx/html/index.html:ro
       - ./proxy/404.html:/usr/share/nginx/html/404.html:ro
       - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro

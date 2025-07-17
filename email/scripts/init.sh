@@ -5,10 +5,8 @@ set -e
 
 # 1) Lista de usuários e senhas iniciais
 declare -A USERS=(
-  [joao_marcos]="Senha123"
-  [joao_victor]="Senha123"
-  [jose_eduardo]="Senha123"
-  [redes]="Senha123"
+  [redes1]="Senha123"
+  [redes2]="Senha123"
 )
 
 # 2) Para cada usuário:
