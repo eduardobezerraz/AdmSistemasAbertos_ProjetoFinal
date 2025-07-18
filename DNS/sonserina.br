@@ -14,13 +14,14 @@ $TTL    604800
 ns      IN      A       192.168.0.9
 
 ; Domínio raiz e www
-@       IN      A       192.168.0.9      ; sonserina.br
-www     IN      A       192.168.0.9      ; www.sonserina.br
+@       IN      A       192.168.0.9     ; sonserina.br
+www     IN      A       192.168.0.9     ; www.sonserina.br
 
 ; Serviços via CNAME para o apex
 portal      IN      CNAME   @               ; portal.sonserina.br → 192.168.0.9
 webmail     IN      CNAME   @               ; webmail.sonserina.br → 192.168.0.9
 proxy       IN      CNAME   @               ; sonserina.sonserina.br → 192.168.0.9
+sign        IN      CNAME   @               ; sonserina.sonserina.br → 192.168.0.9
 
 ; Cliente 1 - Novo portal
 cliente1             IN      A       192.168.0.9
