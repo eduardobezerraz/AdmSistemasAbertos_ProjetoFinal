@@ -1,0 +1,99 @@
+services:
+ 
+  cliente1_portal:
+    container_name: cliente1_portal
+    build:
+      context: ./cliente1/portal
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - cliente1_net
+
+  cliente1_proxy:
+    container_name: cliente1_proxy
+    build:
+      context: ./cliente1/proxy
+      dockerfile: Dockerfile
+    ports:
+      - "8082:80"
+      - "2443:443"
+    networks:
+      - cliente1_net
+
+  cliente1_hotsite:
+    container_name: cliente1_hotsite
+    build:
+      context: ./cliente1/hotsite
+      dockerfile: Dockerfile
+    ports:
+      - "8083:80"
+      - "1443:443"
+    networks:
+      - cliente1_net
+
+  db:
+    image: postgres:15-alpine
+    container_name: sign-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-dbuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dbuserpass123}
+      POSTGRES_DB: ${DB_NAME:-docsign_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-dbuser} -d ${DB_NAME:-docsign_db}"]
+      interval: 120s
+      timeout: 30s
+      retries: 20
+      start_period: 120s
+    networks:
+      - cliente1_net
+
+  backend:
+    image: salesfilho/sign-api:latest
+    container_name: sign-api
+    platform: linux/arm64
+    environment:
+      DB_HOST: db
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER:-dbuser}
+      DB_PASSWORD: ${DB_PASSWORD:-dbuserpass123}
+      DB_NAME: ${DB_NAME:-docsign_db}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://backend:8000/health"]
+      interval: 120s
+      timeout: 30s
+      retries: 20
+      start_period: 120s
+    networks:
+      - cliente1_net
+
+  frontend:
+    image: salesfilho/sign-app:latest
+    container_name: sign-app
+    platform: linux/arm64
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-http://localhost:8000/api}
+    ports:
+      - "${FRONTEND_PORT:-8081}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 120s
+      timeout: 30s
+      retries: 20
+      start_period: 120s
+    networks:
+      - cliente1_net
+  
+volumes:
+ postgres_data:
+    driver: local
