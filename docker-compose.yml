@@ -84,7 +84,7 @@ include:
 
 networks:
   ispnet:
-    driver: bridge
+    external: true
   cliente1_net:
     driver: bridge
 

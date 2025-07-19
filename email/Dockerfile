@@ -16,7 +16,12 @@ COPY postfix/main.cf /etc/postfix/main.cf
 
 # 3) Copia e torna executável o init (mantém só este)
 COPY scripts/init.sh /init.sh
-RUN chmod +x /init.sh
+
+#  Remove CRLF (caracteres de fim de linha do Windows)
+COPY scripts/init.sh /init.sh
+RUN sed -i 's/\r$//' /init.sh \
+    && chmod +x /init.sh
+
 
 
 # 4) Declara volumes para certificados e dados
