@@ -6,35 +6,46 @@
 > Instituição: IFRN - Campus Natal Central
 
 ## 👥 Equipe
-
+<div align="center">
+  
 | Foto | Nome | GitHub |
 |------|------|--------|
 | <img src="https://github.com/eduardobezerraz.png" width="50"> | José Eduardo Bezerra de Medeiros | [@eduardobezerraz](https://github.com/eduardobezerraz) |
 | <img src="https://github.com/joao-victor212.png" width="50"> | João Victor | [@joao-victor212](https://github.com/joao-victor212) |
 | <img src="https://github.com/joaommcjm.png" width="50"> | João Marcos Medeiros Costa | [@joaommcjm](https://github.com/joaommcjm) |
 | <img src="https://github.com/heysonsilva.png" width="50"> | Heyson Silva | [@heysonsilva](https://github.com/heysonsilva) |
-
+</div>
 
 ## 📌 Descrição
 
 Este projeto tem como objetivo a implementação de uma **infraestrutura para Provedor de Serviços de Internet (ISP)** utilizando **microsserviços e Docker**, aplicando os princípios de *Infrastructure as Code (IaC)* e *DevOps*. O sistema é modular, seguro e escalável, contemplando serviços como:
 
-- DNS (com Bind9)  
-- Correio Eletrônico (com Postfix e Dovecot)  
-- Proxy reverso com SSL/TLS (via Nginx, HAProxy, Apache ou Traefik)  
+- **DNS**: Bind9 com zonas configuráveis  
+- **E-mail**: Postfix (SMTP) + Dovecot (IMAP) + Roundcube  
+- **Proxy**: Nginx com SSL/TLS automático  
+- **Portais**: Hotsites e área do cliente  
 
+**Destaques técnicos**:  
+- Automação via scripts PowerShell e ShellScript
+- Certificados SSL auto-gerados  
+- Isolamento por cliente  
+- Configuração IaC com Docker Compose
+  
+<div align="center">
+  
+## 🎯 Objetivos do projeto:
 
+| Objetivo | Status |
+|----------|:--------:|
+| Desenvolver uma infraestrutura baseada em Docker para ISPs | [![Concluído](https://img.shields.io/badge/-Concluído-success)] |
+| Isolar serviços por cliente usando Docker Networks e ACLs | [![Em Andamento](https://img.shields.io/badge/-Em_Andamento-yellow)] |
+| Aplicar criptografia com HTTPS e STARTTLS | [![Bug](https://img.shields.io/badge/-Bug-critical)] |
+| Criar testes automatizados e documentação em vídeo | [![Em Andamento](https://img.shields.io/badge/-Em_Andamento-yellow)] |
+| Validar desempenho com métricas (latência, disponibilidade) | [![Não Iniciado](https://img.shields.io/badge/-Não_Iniciado-lightgrey)] |
+| Cumprir entregas parciais em 4 sprints (8 semanas) | [![Em Andamento](https://img.shields.io/badge/-Em_Andamento-yellow)] |
 
-## 🎯 Objetivos SMART
+</div>
 
-- [x] Desenvolver uma infraestrutura baseada em Docker para ISPs  
-- [x] Isolar serviços por cliente usando Docker Networks e ACLs  
-- [x] Aplicar criptografia com HTTPS e STARTTLS  
-- [x] Criar testes automatizados e documentação em vídeo  
-- [x] Validar desempenho com métricas (latência, disponibilidade)  
-- [x] Cumprir entregas parciais em 4 sprints (8 semanas)  
-
----
 
 ## 🧱 Arquitetura
 
