@@ -7,12 +7,13 @@
 
 ## 👥 Equipe
 
-- [@eduardobezerraz](https://github.com/eduardobezerraz) - José Eduardo Bezerra de Medeiros  
-- [@joao-victor212](https://github.com/joao-victor212) - João Victor  
-- [@joaommcjm](https://github.com/joaommcjm) - João Marcos Medeiros Costa  
-- [@heysonsilva](https://github.com/heysonsilva) - Heyson Silva  
+| Foto | Nome | GitHub |
+|------|------|--------|
+| <img src="https://github.com/eduardobezerraz.png" width="50"> | José Eduardo Bezerra de Medeiros | [@eduardobezerraz](https://github.com/eduardobezerraz) |
+| <img src="https://github.com/joao-victor212.png" width="50"> | João Victor | [@joao-victor212](https://github.com/joao-victor212) |
+| <img src="https://github.com/joaommcjm.png" width="50"> | João Marcos Medeiros Costa | [@joaommcjm](https://github.com/joaommcjm) |
+| <img src="https://github.com/heysonsilva.png" width="50"> | Heyson Silva | [@heysonsilva](https://github.com/heysonsilva) |
 
----
 
 ## 📌 Descrição
 
@@ -22,7 +23,7 @@ Este projeto tem como objetivo a implementação de uma **infraestrutura para Pr
 - Correio Eletrônico (com Postfix e Dovecot)  
 - Proxy reverso com SSL/TLS (via Nginx, HAProxy, Apache ou Traefik)  
 
----
+
 
 ## 🎯 Objetivos SMART
 
