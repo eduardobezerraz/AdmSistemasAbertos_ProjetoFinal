@@ -3,7 +3,7 @@
 > Disciplina: Administração de Sistemas Abertos (ASA)  
 > Professor: Sales Filho  
 > Duração: 8 semanas  
-> Instituição: IFRN - Campus Currais Novos
+> Instituição: IFRN - Campus Natal Central
 
 ## 👥 Equipe
 
