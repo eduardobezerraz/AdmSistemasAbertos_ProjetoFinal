@@ -44,7 +44,7 @@ Abaixo, a representação da arquitetura da rede do ISP implementada no projeto:
 ---
 ## 📂 Explicação dos Diretórios do Projeto
 
-### **📁 clientes/**
+### **[📁 clientes/](./clientes)**
 Diretório que contém configurações específicas para cada cliente do provedor. Cada cliente possui:
 - `hotsite/`: Site institucional básico
 - `portal/`: Área de autoatendimento
@@ -53,19 +53,19 @@ Diretório que contém configurações específicas para cada cliente do provedo
 Arquivo principal:
 - `docker-compose-clientes.yaml`: Configuração Docker para serviços dos clientes
 
-### **📁 DNS/**
+### **[📁 DNS/](./DNS)**
 Configurações do servidor DNS (Bind9) contendo:
 - `Dockerfile`: Configuração do container
 - `named.conf.local`: Definição das zonas DNS
 - `sonserina.br`: Arquivo de zona DNS principal
 
-### **📁 docs/**
+### **[📁 docs/](./docs)**
 Armazena toda a documentação do projeto:
 - Diagramas de arquitetura
 - Fluxogramas dos scripts
 - Documentação complementar
 
-### **📁 email/**
+### **[📁 email/](./email)**
 Implementação completa de serviço de e-mail com:
 - `Dockerfile`: Configuração principal
 - `conf.d/`: Configurações adicionais
@@ -73,12 +73,12 @@ Implementação completa de serviço de e-mail com:
 - `postfix/`: Servidor SMTP
 - `scripts/`: Scripts auxiliares
 
-### **📁 Portal/**
+### **[📁 Portal/](./Portal)**
 Portal institucional do provedor contendo:
 - `Dockerfile`: Configuração do container
 - `index.html`: Página web principal
 
-### **📁 proxy/**
+### **[📁 proxy/](./proxy)**
 Configurações do proxy reverso (Nginx) com:
 - Arquivos de configuração principal
 - Páginas de erro
@@ -86,14 +86,14 @@ Configurações do proxy reverso (Nginx) com:
   - Certificados raiz
   - Certificados por cliente
 
-### **📁 scripts/**
+### **[📁 scripts/](./scripts)**
 Scripts de automação para:
 - Configuração de DNS
 - Gerenciamento de rede
 - Geração de certificados SSL
 - Ativação/desativação de serviços
 
-### **📁 webmail/**
+### **[📁 webmail/](./webmail)**
 Interface web para e-mails (Roundcube) com:
 - `config/`: Configurações de conexão
   - `config.inc.php`: Configuração principal
