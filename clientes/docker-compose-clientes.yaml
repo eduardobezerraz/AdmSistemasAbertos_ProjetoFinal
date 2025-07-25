@@ -1,18 +1,7 @@
 services:
- 
-  cliente1_portal:
-    container_name: cliente1_portal
-    build:
-      context: ./cliente1/portal
-      dockerfile: Dockerfile
-    ports:
-      - "8080:80"
-    networks:
-      - cliente1_net
-      - ispnet
 
-  cliente1_proxy:
-    container_name: cliente1_proxy
+  hogwarts_proxy:
+    container_name: hogwarts_proxy
     build:
       context: ./cliente1/proxy
       dockerfile: Dockerfile
@@ -20,11 +9,25 @@ services:
       - "8082:80"
       - "2443:443"
     networks:
-      - cliente1_net
-      - ispnet
+      - hogwartsnet
+      - ispnet  
+    depends_on:
+      - db
+      - backend
+      - frontend
 
-  cliente1_hotsite:
-    container_name: cliente1_hotsite
+  hogwarts_portal:
+    container_name: hogwarts_portal
+    build:
+      context: ./cliente1/portal
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - hogwartsnet
+
+  hogwarts_hotsite:
+    container_name: hogwarts_hotsite
     build:
       context: ./cliente1/hotsite
       dockerfile: Dockerfile
@@ -32,8 +35,8 @@ services:
       - "8083:80"
       - "1443:443"
     networks:
-      - cliente1_net
-      - ispnet
+      - hogwartsnet
+      
 
   db:
     image: postgres:15-alpine
@@ -51,8 +54,8 @@ services:
       retries: 20
       start_period: 120s
     networks:
-      - cliente1_net
-      - ispnet
+      - hogwartsnet
+      
 
   backend:
     image: salesfilho/sign-api:latest
@@ -76,8 +79,8 @@ services:
       retries: 20
       start_period: 120s
     networks:
-      - cliente1_net
-      - ispnet
+      - hogwartsnet
+      
 
   frontend:
     image: salesfilho/sign-app:latest
@@ -97,13 +100,13 @@ services:
       retries: 20
       start_period: 120s
     networks:
-      - cliente1_net
-      - ispnet
+      - hogwartsnet
+      
 
 networks:
   ispnet:
     external: true       # <<=== importante
-  cliente1_net:
+  hogwartsnet:
     driver: bridge
 
 volumes:

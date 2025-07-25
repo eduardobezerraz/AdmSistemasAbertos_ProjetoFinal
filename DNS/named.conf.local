@@ -5,3 +5,11 @@ zone "sonserina.br" {
         127.0.0.1;
     };
 };
+
+zone "hogwarts.br"{
+    type master;
+    file "/etc/bind/hogwarts.br";
+    allow-transfer {
+        127.0.0.1;
+    };
+};

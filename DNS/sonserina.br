@@ -3,7 +3,7 @@
 ;
 $TTL    604800
 @       IN      SOA     ns.sonserina.br. root.sonserina.br. (
-                              5         ; Serial (incrementado)
+                              6         ; Serial (incrementado)
                          604800         ; Refresh
                           86400         ; Retry
                         2419200         ; Expire
@@ -22,12 +22,4 @@ portal      IN      CNAME   @               ; portal.sonserina.br → 192.168.1.
 webmail     IN      CNAME   @               ; webmail.sonserina.br → 192.168.1.129
 proxy       IN      CNAME   @               ; sonserina.sonserina.br → 192.168.1.129
 
-; Cliente 1 - Novo portal
-cliente1             IN      A       192.168.1.129
-portal.cliente1      IN      CNAME   cliente1
-hotsite.cliente1     IN      CNAME   cliente1
-sign.cliente1        IN      CNAME   cliente1
 
-; (se quiser reativar depois)
-;cliente2   IN     CNAME    @
-;cliente3   IN     CNAME    @

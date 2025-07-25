@@ -1,0 +1,21 @@
+;
+;
+; Zone file for hogwarts.br
+;
+$TTL    604800
+@       IN      SOA     ns.hogwarts.br. root.hogwarts.br. (
+                              4         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+; 
+  
+@       IN      NS      ns.hogwarts.br.      ; informo qual é o nameserver
+ns     IN      A        192.168.1.129   ; atribuo o IP do nameserver a ele
+@       IN      A       192.168.1.129      ; Cliente 1 IP 
+
+portal      IN      CNAME   @
+hotsite     IN      CNAME   @
+sign        IN      CNAME   @
+proxy      IN      CNAME   @
