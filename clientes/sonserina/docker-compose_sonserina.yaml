@@ -1,7 +1,7 @@
 services:
 
-  hogwarts_proxy:
-    container_name: hogwarts_proxy
+  sonserina_proxy:
+    container_name: sonserina_proxy
     build:
       context: ./cliente1/proxy
       dockerfile: Dockerfile
@@ -9,25 +9,25 @@ services:
       - "8082:80"
       - "2443:443"
     networks:
-      - hogwartsnet
+      - sonserinanet
       - ispnet  
     depends_on:
       - db
       - backend
       - frontend
 
-  hogwarts_portal:
-    container_name: hogwarts_portal
+  sonserina_portal:
+    container_name: sonserina_portal
     build:
       context: ./cliente1/portal
       dockerfile: Dockerfile
     ports:
       - "8080:80"
     networks:
-      - hogwartsnet
+      - sonserinanet
 
-  hogwarts_hotsite:
-    container_name: hogwarts_hotsite
+  sonserina_hotsite:
+    container_name: sonserina_hotsite
     build:
       context: ./cliente1/hotsite
       dockerfile: Dockerfile
@@ -35,7 +35,7 @@ services:
       - "8083:80"
       - "1443:443"
     networks:
-      - hogwartsnet
+      - sonserinanet
       
 
   db:
@@ -54,7 +54,7 @@ services:
       retries: 20
       start_period: 120s
     networks:
-      - hogwartsnet
+      - sonserinanet
       
 
   backend:
@@ -79,7 +79,7 @@ services:
       retries: 20
       start_period: 120s
     networks:
-      - hogwartsnet
+      - sonserinanet
       
 
   frontend:
@@ -100,13 +100,13 @@ services:
       retries: 20
       start_period: 120s
     networks:
-      - hogwartsnet
+      - sonserinanet
       
 
 networks:
   ispnet:
     external: true       # <<=== importante
-  hogwartsnet:
+  sonserinanet:
     driver: bridge
 
 volumes:

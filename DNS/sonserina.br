@@ -1,25 +1,29 @@
 ;
-; BIND data file for sonserina.br zone
+; Zone file for sonserina.br
 ;
-$TTL    604800
+
+$TTL    604800                                ; Define o tempo padrão de vida (TTL) dos registros DNS (em segundos)
+                                              ; TTL de 604800s = 7 dias (tempo que os resolvers mantêm os dados em cache)
+
 @       IN      SOA     ns.sonserina.br. root.sonserina.br. (
-                              6         ; Serial (incrementado)
-                         604800         ; Refresh
-                          86400         ; Retry
-                        2419200         ; Expire
-                         604800 )       ; Negative Cache TTL
+                              4               ; Número serial da zona - deve ser incrementado a cada alteração
+                         604800               ; Refresh: intervalo para o slave checar atualizações (7 dias)
+                          86400               ; Retry: tempo de espera caso a última tentativa de atualização falhe (1 dia)
+                        2419200               ; Expire: tempo máximo antes de considerar os dados expirados (28 dias)
+                         604800 )             ; Negative Cache TTL: tempo para armazenar respostas negativas (7 dias)
 
-; Nameserver
-        IN      NS      ns
-ns      IN      A       192.168.1.129
+; ---------- Registros de autoridade ----------
+@       IN      NS      ns.sonserina.br.      ; Define o nameserver (NS) responsável pela zona
+ns      IN      A       192.168.1.129         ; Define o endereço IP do servidor de nomes "ns.sonserina.br"
 
-; Domínio raiz e www
-@       IN      A       192.168.1.129     ; sonserina.br
-www     IN      A       192.168.1.129     ; www.sonserina.br
+; ---------- Registro A principal ----------
+@       IN      A       192.168.1.129         ; Define o IP principal do servidor em que o serviço está hospedado
 
-; Serviços via CNAME para o apex
-portal      IN      CNAME   @               ; portal.sonserina.br → 192.168.1.129
-webmail     IN      CNAME   @               ; webmail.sonserina.br → 192.168.1.129
-proxy       IN      CNAME   @               ; sonserina.sonserina.br → 192.168.1.129
+; ---------- Subdomínios ----------
+portal      IN      CNAME   @                 ; "portal.sonserina.br" aponta para o mesmo IP de "@"
+hotsite     IN      CNAME   @                 ; "hotsite.sonserina.br" aponta para o mesmo IP
+sign        IN      CNAME   @                 ; "sign.sonserina.br" aponta para o mesmo IP
+proxy       IN      CNAME   @                 ; "proxy.sonserina.br" aponta para o mesmo IP
 
-
+; Obs: Todos os serviços estão apontando para o mesmo host, facilitando a manutenção
+; Se no futuro cada subdomínio tiver IP próprio, basta trocar o CNAME por registros A separados.
