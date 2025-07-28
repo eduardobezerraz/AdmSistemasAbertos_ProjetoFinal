@@ -6,7 +6,7 @@ $TTL    604800                                ; Define o tempo padrão de vida (
                                               ; TTL de 604800s = 7 dias (tempo que os resolvers mantêm os dados em cache)
 
 @       IN      SOA     ns.sonserina.br. root.sonserina.br. (
-                              29               ; Número serial (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) da zona - deve ser incrementado a cada alteração
+                              30               ; Número serial (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) da zona - deve ser incrementado a cada alteração
                          604800               ; Refresh: intervalo para o slave checar atualizações (7 dias)
                           86400               ; Retry: tempo de espera caso a última tentativa de atualização falhe (1 dia)
                         2419200               ; Expire: tempo máximo antes de considerar os dados expirados (28 dias)

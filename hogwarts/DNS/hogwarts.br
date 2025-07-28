@@ -5,7 +5,7 @@
 $TTL    604800                                  ; Define o tempo padrão de vida (TTL) dos registros DNS (7 dias)
 
 @       IN      SOA     ns.hogwarts.br. root.hogwarts.br. (
-                              31               ; Número serial (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) da zona (deve ser incrementado a cada modificação)
+                              32               ; Número serial (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) da zona (deve ser incrementado a cada modificação)
                          604800                 ; Refresh: intervalo para servidores secundários verificarem atualizações
                           86400                 ; Retry: tempo para tentar novamente após falha de atualização
                         2419200                 ; Expire: tempo para considerar a zona expirada sem contato (28 dias)

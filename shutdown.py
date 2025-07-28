@@ -29,7 +29,7 @@ def stop_main_compose():
     """Para containers principais com docker-compose"""
     print("Desligando containers principais...")
     try:
-        compose_dir = Path(__file__).parent.resolve()
+        compose_dir = Path(__file__).parent.resolve() / "hogwarts"  # corrigido para pasta hogwarts
         result = subprocess.run(["docker-compose", "down"], cwd=compose_dir, check=False)
         if result.returncode != 0:
             print(f"AVISO: docker-compose down retornou erro ({result.returncode})")

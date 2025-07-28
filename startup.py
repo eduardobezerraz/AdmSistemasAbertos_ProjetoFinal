@@ -120,7 +120,7 @@ def start_client_compose():
     for file in compose_files:
         compose_path = Path(file).resolve()
         client_dir = compose_path.parent
-        project_name = f"{DOCKER_PROJECT_NAME}_{client_dir.name}"
+        project_name = client_dir.name
 
         print(f"\nIniciando cliente: {client_dir.name} (projeto '{project_name}')")
 
