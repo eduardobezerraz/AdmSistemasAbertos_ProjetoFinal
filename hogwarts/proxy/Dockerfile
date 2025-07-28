@@ -1,9 +1,5 @@
 FROM nginx:latest
 
-# Copia certificados SSL
-COPY ssl/sonserina.crt /etc/ssl/certs/
-COPY ssl/sonserina.key /etc/ssl/private/
-
 # Copia a configuração do servidor (vai para /etc/nginx/conf.d/default.conf)
 COPY default.conf /etc/nginx/conf.d/
 

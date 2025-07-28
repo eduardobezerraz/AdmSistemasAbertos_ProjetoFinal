@@ -3,14 +3,14 @@ services:
   sonserina_proxy:
     container_name: sonserina_proxy
     build:
-      context: ./cliente1/proxy
+      context: ./proxy
       dockerfile: Dockerfile
-    ports:
+    ports: 
       - "8082:80"
       - "2443:443"
     networks:
-      - sonserinanet
-      - ispnet  
+      - hogwartsnet
+      - sonserinanet  
     depends_on:
       - db
       - backend
@@ -19,7 +19,7 @@ services:
   sonserina_portal:
     container_name: sonserina_portal
     build:
-      context: ./cliente1/portal
+      context: ./portal
       dockerfile: Dockerfile
     ports:
       - "8080:80"
@@ -29,7 +29,7 @@ services:
   sonserina_hotsite:
     container_name: sonserina_hotsite
     build:
-      context: ./cliente1/hotsite
+      context: ./hotsite
       dockerfile: Dockerfile
     ports:
       - "8083:80"
@@ -46,7 +46,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-dbuserpass123}
       POSTGRES_DB: ${DB_NAME:-docsign_db}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - sonserina_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-dbuser} -d ${DB_NAME:-docsign_db}"]
       interval: 120s
@@ -104,11 +104,14 @@ services:
       
 
 networks:
-  ispnet:
-    external: true       # <<=== importante
+  hogwartsnet:
+    external: true  # Usa a rede existente
+    name: hogwartsnet
+
   sonserinanet:
-    driver: bridge
+    external: true  # Usa a rede existente
+    name: sonserinanet
 
 volumes:
- postgres_data:
+ sonserina_postgres_data:
     driver: local

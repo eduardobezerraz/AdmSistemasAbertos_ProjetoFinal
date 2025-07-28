@@ -40,9 +40,17 @@ def get_interface_ip(interface_name):
             ['netsh', 'interface', 'ipv4', 'show', 'addresses', f'name="{interface_name}"'],
             capture_output=True,
             text=True,
+            encoding='latin-1',  # Adiciona encoding para tratar caracteres
             check=True
         )
-        ip_match = re.search(r'Endereço IP:\s+([\d\.]+)', result.stdout)
+        
+        # Regex mais robusta para diferentes codificações
+        ip_match = re.search(r'Endere[^\w]o IP:\s+([\d\.]+)', result.stdout)
+        if ip_match:
+            return ip_match.group(1)
+        
+        # Fallback para padrão alternativo
+        ip_match = re.search(r'IP Address[^\w]\s+([\d\.]+)', result.stdout)
         return ip_match.group(1) if ip_match else None
         
     except subprocess.CalledProcessError as e:
@@ -61,16 +69,12 @@ def update_zone_file(zone_file, ip_address):
         updated = False
         serial_incremented = False
         
-        # Incrementa o número serial (formato: número ou YYYYMMDDNN)
+        # Incrementa o número serial
         def increment_serial(match):
             nonlocal serial_incremented
-            old_serial = match.group(1)
-            if old_serial.isdigit():
-                serial_incremented = True
-                return f"{int(old_serial) + 1}               ; Número serial (incrementado)"
-            return match.group(0)
+            serial_incremented = True
+            return f"{int(match.group(1)) + 1}               ; Número serial (incrementado)"
         
-        # Atualiza serial primeiro
         new_content = re.sub(
             r'(\d+)\s*;\s*Número serial',
             increment_serial,
@@ -78,18 +82,18 @@ def update_zone_file(zone_file, ip_address):
             count=1
         )
         
-        # Atualiza registros A e NS
-        ip_pattern = re.compile(r'\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b')
-        def update_ip(match):
+        # Atualiza registros A
+        def update_a_records(match):
             nonlocal updated
-            if match.group(1) != ip_address:
+            current_ip = match.group(2)
+            if current_ip != ip_address:
                 updated = True
-                return ip_address
-            return match.group(1)
+                return f"{match.group(1)}{ip_address}"
+            return match.group(0)
         
         new_content = re.sub(
-            r'^\s*((?:ns|@|www)?\s+IN\s+(?:A|NS)\s+)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})',
-            lambda m: m.group(1) + ip_address,
+            r'^(\s*(?:@|www|ns)?\s+IN\s+A\s+)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})',
+            update_a_records,
             new_content,
             flags=re.MULTILINE
         )
@@ -127,7 +131,7 @@ def main():
     
     # 3. Encontrar e atualizar todos os arquivos .br na pasta DNS
     script_dir = Path(__file__).parent
-    dns_dir = script_dir.parent / "DNS"
+    dns_dir = script_dir.parent / "hogwarts" / "DNS"
     
     if not dns_dir.exists():
         print(f"ERRO: Pasta DNS não encontrada em {dns_dir}", file=sys.stderr)
@@ -145,13 +149,14 @@ def main():
         print(f"\nProcessando: {zone_file.name}")
         
         updated, serial_inc = update_zone_file(zone_file, ip_address)
-        
+
         if serial_inc:
-            print("  ✓ Serial incrementado")
+            print("Serial incrementado")
         if updated:
-            print(f"  ✓ IP atualizado para {ip_address}")
-        if not (updated or serial_inc):
-            print("  ✓ Nenhuma alteração necessária (IPs já estão atualizados)")
+            print(f"IP atualizado para {ip_address}")
+        else:
+            print("Nenhuma alteração necessária (IPs já estão atualizados)")
+
 
 if __name__ == "__main__":
     try:

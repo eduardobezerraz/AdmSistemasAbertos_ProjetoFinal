@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Script para verificar e gerar certificados SSL quando necessário:
-1. Verifica se os certificados já existem
-2. Gera certificado para o ISP Hogwarts se necessário
-3. Gera certificados para todos os clientes encontrados
+Script aprimorado para gerenciamento de certificados SSL:
+1. Padroniza caminhos de certificados
+2. Melhora a estrutura de diretórios
+3. Adiciona validações de paths
 """
 
 import os
@@ -11,16 +11,20 @@ import subprocess
 import sys
 from pathlib import Path
 
-def verificar_certificado_existente(dominio, pasta_saida):
+# Diretórios base padronizados
+BASE_DIR = Path(__file__).parent.parent
+SSL_DIR_ISP = BASE_DIR / "hogwarts" / "proxy" / "ssl"  # Certificados do ISP corrigido para o caminho certo
+CLIENTES_DIR = BASE_DIR / "clientes"
+
+def verificar_certificado_existente(dominio, ssl_dir):
     """Verifica se o certificado já existe e é válido"""
-    cert_path = Path(f"{pasta_saida}/{dominio}.crt")
-    key_path = Path(f"{pasta_saida}/{dominio}.key")
+    cert_path = ssl_dir / f"{dominio}.crt"
+    key_path = ssl_dir / f"{dominio}.key"
     
     if not cert_path.exists() or not key_path.exists():
         return False
     
     try:
-        # Verifica se o certificado é válido
         subprocess.run(
             ["openssl", "x509", "-in", str(cert_path), "-noout"],
             check=True,
@@ -31,74 +35,84 @@ def verificar_certificado_existente(dominio, pasta_saida):
     except subprocess.CalledProcessError:
         return False
 
-def gerar_certificado(nome, dominio, pasta_saida):
+def gerar_certificado(nome, dominio, ssl_dir):
     """
-    Gera certificado SSL autoassinado com validade de 1 ano
-    se não existir ou for inválido
+    Gera certificado SSL autoassinado com estrutura padronizada
     """
-    if verificar_certificado_existente(dominio, pasta_saida):
-        print(f"Certificado para {dominio} já existe e é válido. Pulando geração.")
+    # Cria o diretório se não existir (com permissões seguras)
+    ssl_dir.mkdir(parents=True, exist_ok=True, mode=0o750)
+    
+    if verificar_certificado_existente(dominio, ssl_dir):
+        print(f"[INFO] Certificado para {dominio} já existe em {ssl_dir}")
         return True
     
-    print(f"Gerando certificado para {nome} ({dominio})...")
+    print(f"[GERANDO] Certificado para {nome} ({dominio}) em {ssl_dir}")
     
     try:
-        # Cria pasta se não existir
-        Path(pasta_saida).mkdir(parents=True, exist_ok=True)
-        
-        # Gera chave privada
+        # Gera chave privada com permissões restritas
         subprocess.run([
             "openssl", "genrsa", "-out", 
-            f"{pasta_saida}/{dominio}.key", "2048"
+            str(ssl_dir / f"{dominio}.key"), "2048"
         ], check=True)
-        
-        # Cria solicitação de certificado
+        os.chmod(ssl_dir / f"{dominio}.key", 0o640)
+
+        # Gera CSR
         subprocess.run([
-            "openssl", "req", "-new", "-key", f"{pasta_saida}/{dominio}.key",
-            "-out", f"{pasta_saida}/{dominio}.csr",
+            "openssl", "req", "-new", 
+            "-key", str(ssl_dir / f"{dominio}.key"),
+            "-out", str(ssl_dir / f"{dominio}.csr"),
             "-subj", f"/CN={dominio}/O={nome}"
         ], check=True)
-        
-        # Assina o certificado (validade fixa de 1 ano)
+
+        # Gera certificado
         subprocess.run([
             "openssl", "x509", "-req", "-days", "365",
-            "-in", f"{pasta_saida}/{dominio}.csr",
-            "-signkey", f"{pasta_saida}/{dominio}.key",
-            "-out", f"{pasta_saida}/{dominio}.crt"
+            "-in", str(ssl_dir / f"{dominio}.csr"),
+            "-signkey", str(ssl_dir / f"{dominio}.key"),
+            "-out", str(ssl_dir / f"{dominio}.crt")
         ], check=True)
-        
-        print(f"✓ Certificado gerado em {pasta_saida}")
+
+        print(f"[SUCESSO] Certificado gerado em {ssl_dir}")
         return True
         
     except subprocess.CalledProcessError as e:
-        print(f"✗ Erro ao gerar certificado para {dominio}: {e}")
+        print(f"[ERRO] Falha ao gerar certificado: {e}", file=sys.stderr)
         return False
 
 def processar_clientes():
-    """Processa todos os clientes encontrados na pasta /clientes"""
-    pasta_clientes = Path("clientes")
-    
-    if not pasta_clientes.exists():
-        print("Aviso: Pasta de clientes não encontrada")
-        return
+    """Processa clientes com estrutura padronizada"""
+    if not CLIENTES_DIR.exists():
+        print("[AVISO] Pasta de clientes não encontrada", file=sys.stderr)
+        return 0
     
     clientes_processados = 0
     
-    for cliente in pasta_clientes.iterdir():
-        if cliente.is_dir():
-            script_cliente = cliente / "scripts" / "gerar_certificado.py"
-            if script_cliente.exists():
-                print(f"\nProcessando cliente {cliente.name}...")
-                try:
-                    subprocess.run(["python3", str(script_cliente)], check=True)
-                    clientes_processados += 1
-                except subprocess.CalledProcessError:
-                    print(f"Erro ao processar cliente {cliente.name}")
+    for cliente_dir in CLIENTES_DIR.iterdir():
+        if not cliente_dir.is_dir():
+            continue
+            
+        # Path padronizado para certificados do cliente
+        ssl_dir = cliente_dir / "proxy" / "ssl"
+        script_cliente = cliente_dir / "scripts" / "gerar_certificado.py"
+        
+        if script_cliente.exists():
+            print(f"\n[CLIENTE] Processando {cliente_dir.name}...")
+            try:
+                subprocess.run(
+                    ["python3", str(script_cliente)],
+                    cwd=cliente_dir,
+                    check=True
+                )
+                clientes_processados += 1
+            except subprocess.CalledProcessError as e:
+                print(f"[ERRO] Falha no cliente {cliente_dir.name}: {e}", file=sys.stderr)
+        elif not ssl_dir.exists():
+            print(f"[AVISO] {cliente_dir.name} sem configuração SSL", file=sys.stderr)
     
     return clientes_processados
 
 def verificar_openssl():
-    """Verifica se o OpenSSL está instalado"""
+    """Valida instalação do OpenSSL"""
     try:
         subprocess.run(
             ["openssl", "version"],
@@ -111,27 +125,22 @@ def verificar_openssl():
         return False
 
 def main():
-    # Verifica se o OpenSSL está instalado
     if not verificar_openssl():
-        print("Erro: OpenSSL não está instalado ou não está no PATH")
+        print("[ERRO] OpenSSL não encontrado", file=sys.stderr)
         sys.exit(1)
     
-    # Gera certificado do ISP se necessário
-    sucesso_isp = gerar_certificado(
+    # Certificado do ISP
+    if not gerar_certificado(
         nome="Hogwarts ISP",
         dominio="hogwarts.br",
-        pasta_saida="proxy/ssl"
-    )
-    
-    if not sucesso_isp:
+        ssl_dir=SSL_DIR_ISP
+    ):
         sys.exit(1)
     
-    # Gera certificados para clientes
+    # Certificados dos clientes
     clientes_processados = processar_clientes()
-    
-    print(f"\n✔ Concluído! {clientes_processados} clientes processados.")
+    print(f"\n[CONCLUSÃO] {clientes_processados} clientes processados")
 
 if __name__ == "__main__":
-    # Muda para o diretório do script para usar caminhos relativos
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    os.chdir(BASE_DIR)
     main()

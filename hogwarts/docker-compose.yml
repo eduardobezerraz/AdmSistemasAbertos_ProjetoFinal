@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   dns:
@@ -10,7 +10,7 @@ services:
       - "53:53/udp"
       - "53:53/tcp"
     networks:
-      - ispnet
+      - hogwartsnet
 
   portal:
     build:
@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     container_name: portal
     networks:
-      - ispnet
+      - hogwartsnet
 
   proxy:
     build:
@@ -29,18 +29,20 @@ services:
       - "80:80/tcp"
       - "443:443/tcp"
     volumes:
-      - ./proxy/ssl/hogwarts.crt:/etc/nginx/ssl/hogwarts.crt:ro
-      - ./proxy/ssl/hogwarts.key:/etc/nginx/ssl/hogwarts.key:ro
-      - ./proxy/ssl/portal.cliente1.crt:/etc/nginx/ssl/portal.cliente1.crt:ro
-      - ./proxy/ssl/portal.cliente1.key:/etc/nginx/ssl/portal.cliente1.key:ro
-      - ./proxy/index.html:/usr/share/nginx/html/index.html:ro
-      - ./proxy/404.html:/usr/share/nginx/html/404.html:ro
-      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      hogwarts_proxy:
-        condition: service_healthy
+      # Certificados SSL do ISP
+      - ./proxy/ssl/hogwarts.br.crt:/etc/nginx/ssl/hogwarts.br.crt:ro
+      - ./proxy/ssl/hogwarts.br.key:/etc/nginx/ssl/hogwarts.br.key:ro
+
+      # Certificados SSL do cliente Sonserina (apenas leitura)
+      - ./clientes/sonserina/proxy/ssl/sonserina.br.crt:/etc/nginx/ssl/sonserina.br.crt:ro
+      - ./clientes/sonserina/proxy/ssl/sonserina.br.key:/etc/nginx/ssl/sonserina.br.key:ro
+
+      # Configurações e conteúdo estático do NGINX
+      - ./proxy/html:/usr/share/nginx/html:ro
+      - ./proxy/conf.d:/etc/nginx/conf.d:ro
     networks:
-      - ispnet
+      - hogwartsnet
+      - sonserinanet
 
   mail:
     build:
@@ -58,12 +60,12 @@ services:
       - "465:465/tcp"
       - "993:993/tcp"
     volumes:
-      - ./proxy/ssl/hogwarts.crt:/etc/ssl/certs/hogwarts.crt:ro
-      - ./proxy/ssl/hogwarts.key:/etc/ssl/private/hogwarts.key:ro
+      - ./proxy/ssl/hogwarts.br.crt:/etc/ssl/certs/hogwarts.br.crt:ro
+      - ./proxy/ssl/hogwarts.br.key:/etc/ssl/private/hogwarts.br.key:ro
       - ./proxy/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
       - maildata:/maildata
     networks:
-      - ispnet
+      - hogwartsnet
 
   webmail:
     image: roundcube/roundcubemail:latest
@@ -73,16 +75,18 @@ services:
     volumes:
       - ./webmail/config/config.inc.php:/var/roundcube/config/config.inc.php:ro
     networks:
-      - ispnet
-  
-  include:
-    - ./clientes/hogwarts/docker-compose-hogwarts.yaml
+      - hogwartsnet
 
 networks:
-  ispnet:
-    external: true
   hogwartsnet:
+    name: hogwartsnet
     driver: bridge
+    attachable: true
+
+  sonserinanet:
+    name: sonserinanet
+    driver: bridge
+    attachable: true
 
 volumes:
   roundcube_data:
