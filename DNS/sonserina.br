@@ -3,7 +3,7 @@
 ;
 $TTL    604800
 @       IN      SOA     ns.sonserina.br. root.sonserina.br. (
-                              5         ; Serial (incrementado)
+                              7         ; Serial (incrementado)
                          604800         ; Refresh
                           86400         ; Retry
                         2419200         ; Expire
@@ -11,11 +11,11 @@ $TTL    604800
 
 ; Nameserver
         IN      NS      ns
-ns      IN      A       192.168.1.65
+ns      IN      A       192.168.1.129
 
 ; Domínio raiz e www
-@       IN      A       192.168.1.65    ; sonserina.br
-www     IN      A       192.168.1.65     ; www.sonserina.br
+@       IN      A       192.168.1.129    ; sonserina.br
+www     IN      A       192.168.1.129     ; www.sonserina.br
 
 ; Serviços via CNAME para o apex
 portal      IN      CNAME   @               ; portal.sonserina.br → 192.168.0.9

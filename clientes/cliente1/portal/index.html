@@ -1,181 +1,224 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sonserina TI – Portal Cliente 1</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grifinoria TI – Portal do Cliente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap");
 
-    :root {
-      --son-dark: #1a472a;
-      --son-primary: #2a623d;
-      --son-light: #5d6d64;
-      --son-accent: #aaaaaa;
-      --text-light: #e0e0e0;
-      --bg-dark: #0a0a0a;
-    }
+      :root {
+        --gryff-dark: #7b1113;
+        --gryff-primary: #a41e22;
+        --gryff-light: #f5d300;
+        --gryff-accent: #e6c200;
+        --text-light: #f8f8f8;
+        --bg-dark: #1a1a1a;
+      }
 
-    body {
-      font-family: 'Cormorant Garamond', serif;
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+      body {
+        font-family: "Cormorant Garamond", serif;
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .slytherin-font { font-family: 'Cinzel Decorative', cursive; }
+      .gryffindor-font {
+        font-family: "Cinzel Decorative", cursive;
+      }
 
-    .slytherin-bg {
-      background: linear-gradient(135deg, var(--son-dark) 0%, #2d3436 100%);
-    }
-    .slytherin-border { border-color: var(--son-primary); }
-    .slytherin-text { color: var(--son-primary); }
-    .slytherin-highlight { color: var(--son-accent); }
+      .gryff-bg {
+        background: linear-gradient(135deg, var(--gryff-dark) 0%, #3a1f1f 100%);
+      }
+      .gryff-border {
+        border-color: var(--gryff-primary);
+      }
+      .gryff-text {
+        color: var(--gryff-primary);
+      }
+      .gryff-highlight {
+        color: var(--gryff-accent);
+      }
 
-    /* override Tailwind classes with attribute styles */
-    header {
-      background: linear-gradient(135deg, var(--son-dark) 0%, #2d3436 100%);
-    }
+      header {
+        background: linear-gradient(135deg, var(--gryff-dark) 0%, #3a1f1f 100%);
+      }
 
-    header .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-    }
-    header a {
-      color: var(--text-light);
-      margin-right: 1rem;
-      text-decoration: none;
-    }
-    header a:hover { color: #fff; }
+      header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+      }
+      header a {
+        color: var(--text-light);
+        margin-right: 1rem;
+        text-decoration: none;
+      }
+      header a:hover {
+        color: var(--gryff-light);
+      }
 
-    /* Hero */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      background: var(--son-dark);
-      color: #fff;
-      text-align: center;
-    }
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-    }
-    .hero .content {
-      position: relative;
-      padding: 4rem 1rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .hero h1 {
-      font-family: 'Cinzel Decorative', cursive;
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: #fff;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      color: var(--text-light);
-    }
-    .hero .buttons {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .hero .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      border-radius: 9999px;
-      font-weight: bold;
-      transition: transform .2s, background .3s;
-      text-decoration: none;
-    }
-    .btn-sign {
-      background: var(--son-primary);
-      color: #fff;
-    }
-    .btn-hotsite {
-      background: var(--son-accent);
-      color: #000;
-    }
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background: var(--gryff-dark);
+        color: #fff;
+        text-align: center;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+      }
+      .hero .content {
+        position: relative;
+        padding: 4rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .hero h1 {
+        font-family: "Cinzel Decorative", cursive;
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: var(--gryff-light);
+      }
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        color: var(--text-light);
+      }
+      .hero .buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .hero .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: bold;
+        transition: transform 0.2s, background 0.3s;
+        text-decoration: none;
+      }
+      .btn-sign {
+        background: var(--gryff-primary);
+        color: #fff;
+      }
+      .btn-hotsite {
+        background: var(--gryff-accent);
+        color: #000;
+      }
+      .btn:hover {
+        transform: scale(1.05);
+      }
 
-    .btn:hover { transform: scale(1.05); }
-
-    /* Footer */
-    footer {
-      background: #000;
-      text-align: center;
-      padding: 1rem;
-      font-size: .9rem;
-      margin-top: auto;
-      color: #555;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Header -->
-  <header>
-    <div class="container">
-      <div class="flex items-center space-x-2">
-        <i class="fas fa-hat-wizard text-2xl" style="color: var(--son-accent)"></i>
-        <h1 class="slytherin-font text-2xl">SONSERINA TI</h1>
+      footer {
+        background: #000;
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.9rem;
+        margin-top: auto;
+        color: #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="flex items-center space-x-4">
+          <img
+            src="https://iconape.com/wp-content/png_logo_vector/grifinoria-logo.png"
+            alt="Logo Grifinória"
+            style="height: 50px"
+          />
+          <h1 class="gryffindor-font text-2xl">GRIFINORIA TI</h1>
+        </div>
+        <nav class="hidden md:flex">
+          <a href="#servicos">Serviços</a>
+          <a href="#sobre">Sobre</a>
+        </nav>
+        <button class="md:hidden text-2xl" style="color: var(--gryff-light)">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
-      <nav class="hidden md:flex">
-        <a href="#servicos">Serviços</a>
-        <a href="#sobre">Sobre</a>
-      </nav>
-      <button class="md:hidden text-2xl" style="color: var(--son-accent)">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-  </header>
+    </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="content">
-      <h1 class="slytherin-font">Portal de Serviços do Cliente 1</h1>
-      <p>Escolha abaixo qual serviço deseja acessar:</p>
-      <div class="buttons">
-        <a href="//sign.cliente1.sonserina.br"    class="btn btn-sign"><i class="fas fa-file-signature"></i> Sign App</a>
-        <a href="//hotsite.cliente1.sonserina.br" class="btn btn-hotsite"><i class="fas fa-globe"></i> Hotsite</a>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="content">
+          <img
+            src="https://iconape.com/wp-content/png_logo_vector/grifinoria-logo.png"
+            alt="Logo Grifinória"
+            style="width: 200px;height: 200px"
+          />
+        <h1 class="gryffindor-font">Portal de Serviços Grifinoria</h1>
+        <p>Escolha abaixo qual serviço deseja acessar:</p>
+        <div class="buttons">
+          <a href="//sign.grifinoria.br" class="btn btn-sign"
+            ><i class="fas fa-file-signature"></i> Sign App</a
+          >
+          <a href="//hotsite.grifinoria.br" class="btn btn-hotsite"
+            ><i class="fas fa-globe"></i> Hotsite</a
+          >
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Services Anchor -->
-  <section id="servicos" style="padding: 2rem; text-align: center;">
-    <h2 class="slytherin-font" style="font-size: 2rem; color: var(--son-accent);">Nossos Serviços</h2>
-    <p style="color: var(--text-light); max-width: 600px; margin: 1rem auto;">
-      Este portal fornece acesso rápido e seguro aos micro-serviços do Cliente 1. Clique no serviço desejado acima.
-    </p>
-  </section>
+    <!-- Services Section -->
+    <section id="servicos" style="padding: 2rem; text-align: center">
+      <h2
+        class="gryffindor-font"
+        style="font-size: 2rem; color: var(--gryff-light)"
+      >
+        Nossos Serviços
+      </h2>
+      <p style="color: var(--text-light); max-width: 600px; margin: 1rem auto">
+        Este portal fornece acesso rápido e seguro aos micro-serviços da
+        Grifinoria TI. Clique no serviço desejado acima.
+      </p>
+    </section>
 
-  <!-- About Section -->
-  <section id="sobre" style="background: var(--son-dark); padding: 2rem; text-align: center; color: #f5f5dc;">
-    <h3 class="slytherin-font" style="font-size: 1.75rem; margin-bottom: .5rem;">Sobre o Cliente 1</h3>
-    <p style="max-width: 600px; margin: 0 auto; line-height: 1.5;">
-      O Cliente 1 oferece soluções personalizadas em TI e infraestrutura para o seu negócio.  
-      Acesse nossos serviços de assinatura, portal e hotsite por meio deste portal unificado.
-    </p>
-  </section>
+    <!-- About Section -->
+    <section
+      id="sobre"
+      style="
+        background: var(--gryff-dark);
+        padding: 2rem;
+        text-align: center;
+        color: #fceabb;
+      "
+    >
+      <h3
+        class="gryffindor-font"
+        style="font-size: 1.75rem; margin-bottom: 0.5rem"
+      >
+        Sobre a Grifinoria TI
+      </h3>
+      <p style="max-width: 600px; margin: 0 auto; line-height: 1.5">
+        A Grifinoria TI oferece soluções personalizadas em tecnologia e
+        infraestrutura para o seu negócio. Acesse nossos serviços de assinatura,
+        portal e hotsite por meio deste portal unificado.
+      </p>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    &copy; 2025 Cliente 1 — Todos os direitos reservados.
-  </footer>
-
-</body>
+    <!-- Footer -->
+    <footer>&copy; 2025 Grifinoria TI — Todos os direitos reservados.</footer>
+  </body>
 </html>

@@ -3,7 +3,7 @@
 ;
 $TTL    604800
 @       IN      SOA     ns.grifinoria.br. root.grifinoria.br. (
-                              2         ; Serial (incrementado)
+                              4         ; Serial (incrementado)
                          604800         ; Refresh
                           86400         ; Retry
                         2419200         ; Expire
@@ -11,14 +11,14 @@ $TTL    604800
 
 ; Nameserver
         IN      NS      ns
-ns      IN      A       192.168.1.65
+ns      IN      A       192.168.1.129
 
 ; Domínio raiz e www
-@       IN      A       192.168.1.65    ; grifinoria.br
-www     IN      A       192.168.1.65     ; www.grifinoria.br
+@       IN      A       192.168.1.129    ; grifinoria.br
+www     IN      A       192.168.1.129     ; www.grifinoria.br
 
 ; Serviços via CNAME para o apex
-sign        IN      CNAME   @               ; portal.grifinoria.br → 192.168.0.9
-hotsite     IN      CNAME   @               ; webmail.grifinoria.br → 192.168.0.9
-proxy       IN      CNAME   @               ; sonserina.grifinoria.br → 192.168.0.9
-portal      IN      CNAME   @               ; sonserina.grifinoria.br → 192.168.0.9
+sign        IN      CNAME   @               ; sign.grifinoria.br → 192.168.0.9
+hotsite     IN      CNAME   @               ; hotsite.grifinoria.br → 192.168.0.9
+proxy       IN      CNAME   @               ; proxy.grifinoria.br → 192.168.0.9
+portal      IN      CNAME   @               ; portal.grifinoria.br → 192.168.0.9
