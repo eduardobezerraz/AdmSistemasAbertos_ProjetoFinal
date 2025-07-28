@@ -1,0 +1,85 @@
+services:
+  dns:
+    build:
+      context: ./dns
+      dockerfile: Dockerfile
+    container_name: dns
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    networks:
+      - ispnet
+
+  portal:
+    build:
+      context: ./portal
+      dockerfile: Dockerfile
+    container_name: portal
+    networks:
+      - ispnet
+
+  proxy:
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    container_name: proxy
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+    volumes:
+      - ./proxy/ssl/sonserina.crt:/etc/nginx/ssl/sonserina.crt:ro
+      - ./proxy/ssl/sonserina.key:/etc/nginx/ssl/sonserina.key:ro
+      - ./proxy/ssl/portal.cliente1.crt:/etc/nginx/ssl/portal.cliente1.crt:ro
+      - ./proxy/ssl/portal.cliente1.key:/etc/nginx/ssl/portal.cliente1.key:ro
+      - ./proxy/index.html:/usr/share/nginx/html/index.html:ro
+      - ./proxy/404.html:/usr/share/nginx/html/404.html:ro
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - ispnet
+      - hogwartsnet
+    restart: always
+
+  mail:
+    build:
+      context: ./email
+      dockerfile: Dockerfile
+    image: email
+    container_name: email
+    hostname: mail.sonserina.br
+    restart: always
+    environment:
+      - DOMAIN=sonserina.br
+    ports:
+      - "25:25/tcp"
+      - "587:587/tcp"
+      - "465:465/tcp"
+      - "993:993/tcp"
+    volumes:
+      - ./proxy/ssl/sonserina.crt:/etc/ssl/certs/sonserina.crt:ro
+      - ./proxy/ssl/sonserina.key:/etc/ssl/private/sonserina.key:ro
+      - ./proxy/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
+      - maildata:/maildata
+    networks:
+      - ispnet
+
+  webmail:
+    image: roundcube/roundcubemail:latest
+    container_name: webmail
+    depends_on:
+      - mail
+    volumes:
+      - ./webmail/config/config.inc.php:/var/roundcube/config/config.inc.php:ro
+    networks:
+      - ispnet
+
+networks:
+  ispnet:
+    external: true
+  hogwartsnet:
+    driver: bridge
+
+volumes:
+  roundcube_data:
+    driver: local
+  maildata:
+    driver: local
