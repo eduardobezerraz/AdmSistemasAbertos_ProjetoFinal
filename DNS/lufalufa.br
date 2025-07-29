@@ -1,0 +1,23 @@
+;
+; BIND data file for lufalufa.br zone
+;
+$TTL    604800
+@       IN      SOA     ns.lufalufa.br. root.lufalufa.br. (
+                              4         ; Serial (incrementado)
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+; Nameserver
+        IN      NS      ns
+ns      IN      A       192.168.1.129
+
+; Domínio raiz e www
+@       IN      A       192.168.1.129     ; lufalufa.br
+www     IN      A       192.168.1.129     ; www.lufalufa.br
+
+; Serviços via CNAME para o apex
+cms         IN      CNAME   @               ; sign.lufalufa.br → 192.168.0.9
+proxy       IN      CNAME   @               ; proxy.lufalufa.br → 192.168.0.9
+portal      IN      CNAME   @               ; hotsite.lufalufa.br → 192.168.0.9

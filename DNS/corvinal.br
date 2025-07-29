@@ -1,0 +1,23 @@
+;
+; BIND data file for corvinal.br zone
+;
+$TTL    604800
+@       IN      SOA     ns.corvinal.br. root.corvinal.br. (
+                              4         ; Serial (incrementado)
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+; Nameserver
+        IN      NS      ns
+ns      IN      A       192.168.1.129
+
+; Domínio raiz e www
+@       IN      A       192.168.1.129    ; corvinal.br
+www     IN      A       192.168.1.129     ; www.corvinal.br
+
+; Serviços via CNAME para o apex
+cms         IN      CNAME   @               ; sign.corvinal.br → 192.168.0.9
+proxy       IN      CNAME   @               ; proxy.corvinal.br → 192.168.0.9
+portal      IN      CNAME   @               ; hotsite.corvinal.br → 192.168.0.9
