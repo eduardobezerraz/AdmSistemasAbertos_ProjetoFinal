@@ -5,16 +5,13 @@ services:
     build:
       context: ./proxy
       dockerfile: Dockerfile
+    depends_on:
+      - frontend
     ports: 
       - "8082:80"
       - "2443:443"
     networks:
-      - hogwartsnet
       - sonserinanet  
-    depends_on:
-      - db
-      - backend
-      - frontend
 
   sonserina_portal:
     container_name: sonserina_portal
@@ -84,7 +81,7 @@ services:
 
   frontend:
     image: salesfilho/sign-app:latest
-    container_name: sign-app
+    container_name: sign_app
     platform: linux/arm64
     environment:
       API_BASE_URL: ${API_BASE_URL:-http://localhost:8000/api}
