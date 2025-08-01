@@ -16,7 +16,7 @@ zone "grifinoria.br" {
 
 zone "corvinal.br" {
     type master;
-    file "/etc/bind/grifinoria.br";
+    file "/etc/bind/corvinal.br";
     allow-transfer {
         127.0.0.1;
     };
@@ -24,7 +24,7 @@ zone "corvinal.br" {
 
 zone "lufalufa.br" {
     type master;
-    file "/etc/bind/grifinoria.br";
+    file "/etc/bind/lufalufa.br";
     allow-transfer {
         127.0.0.1;
     };

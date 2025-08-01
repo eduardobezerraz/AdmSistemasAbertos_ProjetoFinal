@@ -11,9 +11,11 @@ RUN apt install bind9 dnsutils -y
 
 # Copia arquivo para dentro da imagem
 
-# COPY named.conf.local /etc/bind
-# COPY sonserina.br /etc/bind
-# COPY grifinoria.br /etc/bind
+COPY named.conf.local /etc/bind
+COPY sonserina.br /etc/bind
+COPY grifinoria.br /etc/bind
+COPY corvinal.br /etc/bind
+COPY lufalufa.br /etc/bind
 
 # Todo container docker precisa de um ponto de entrada/execução para 
 # manter o container em funcionamento

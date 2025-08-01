@@ -1,0 +1,65 @@
+
+services:
+  cliente2_proxy:
+    container_name: corvinal_proxy 
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    volumes:
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./proxy/index.html:/usr/share/nginx/html/index.html:ro
+    ports:
+      - "8092:80"
+      - "3443:443"
+    networks:
+      - corvinal_net
+      - ispnet
+    
+  cliente2_portal:
+    container_name: corvinal_portal
+    build:
+      context: ./portal
+      dockerfile: Dockerfile
+    networks:
+      - corvinal_net
+
+  wordpress_corvinal:
+    image: wordpress
+    container_name: corvinal_wordpress
+    restart: always
+    ports:
+      - "8094:80"  # Acesso via localhost:8094 (por enquanto que o proxy não ta ativo)
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppassword
+      WORDPRESS_DB_NAME: wpdb
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - corvinal_net
+
+  db_corvinal:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: wpdb
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - corvinal_net
+  
+networks:
+  ispnet:
+    external: true       # <<=== importante
+  corvinal_net:
+    driver: bridge
+  grifinoria_net:
+    driver: bridge
+
+volumes:
+  wordpress_data:
+  db_data:
