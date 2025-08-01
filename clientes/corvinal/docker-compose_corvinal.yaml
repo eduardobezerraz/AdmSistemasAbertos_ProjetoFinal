@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+
+  corvinal_proxy:
+    container_name: corvinal_proxy
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    ports: 
+      - "8086:80"
+      - "2448:443"
+    networks:
+      - corvinalnet
+
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - "9091:80" 
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppassword
+      WORDPRESS_DB_NAME: wpdb
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - corvinalnet
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: wpdb
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+
+  corvinal_portal:
+    container_name: corvinal_portal
+    build:
+      context: ./portal
+      dockerfile: Dockerfile
+    ports:
+      - "9092:80"
+    networks:
+      - corvinalnet
+
+networks:
+  hogwartsnet:
+    external: true  # Usa a rede existente
+    name: hogwartsnet
+
+  corvinalnet:
+    external: true  # Usa a rede existente
+    name: corvinalnet
+
+volumes:
+  wordpress_data:
+  db_data:

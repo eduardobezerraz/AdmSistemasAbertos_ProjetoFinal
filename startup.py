@@ -244,6 +244,8 @@ def main(base_dir):
     # Verifica/cria redes necessárias
     check_create_network("hogwartsnet")
     check_create_network("sonserinanet")
+    check_create_network("grifinorianet")
+    check_create_network("corvinalnet")
     
     # Verifica estrutura de diretórios
     required_dirs = ["scripts", "hogwarts", "clientes"]

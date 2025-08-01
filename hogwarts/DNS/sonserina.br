@@ -6,7 +6,7 @@ $TTL    604800                                ; Define o tempo padrão de vida (
                                               ; TTL de 604800s = 7 dias (tempo que os resolvers mantêm os dados em cache)
 
 @       IN      SOA     ns.sonserina.br. root.sonserina.br. (
-                              69               ; Número serial (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) da zona - deve ser incrementado a cada alteração
+                              80               ; Número serial (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) da zona - deve ser incrementado a cada alteração
                          604800               ; Refresh: intervalo para o slave checar atualizações (7 dias)
                           86400               ; Retry: tempo de espera caso a última tentativa de atualização falhe (1 dia)
                         2419200               ; Expire: tempo máximo antes de considerar os dados expirados (28 dias)
@@ -14,10 +14,10 @@ $TTL    604800                                ; Define o tempo padrão de vida (
 
 ; ---------- Registros de autoridade ----------
 @       IN      NS      ns.sonserina.br.      ; Define o nameserver (NS) responsável pela zona
-ns      IN      A       192.168.0.9         ; Define o endereço IP do servidor de nomes "ns.sonserina.br"
+ns      IN      A       192.168.0.2         ; Define o endereço IP do servidor de nomes "ns.sonserina.br"
 
 ; ---------- Registro A principal ----------
-@       IN      A       192.168.0.9         ; Define o IP principal do servidor em que o serviço está hospedado
+@       IN      A       192.168.0.2         ; Define o IP principal do servidor em que o serviço está hospedado
 
 ; ---------- Subdomínios ----------
 portal      IN      CNAME   @                 ; "portal.sonserina.br" aponta para o mesmo IP de "@"

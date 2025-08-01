@@ -6,9 +6,25 @@ zone "sonserina.br" {
     };
 };
 
-zone "hogwarts.br"{
+zone "grifinoria.br" {
     type master;
-    file "/etc/bind/hogwarts.br";
+    file "/etc/bind/grifinoria.br";
+    allow-transfer {
+        127.0.0.1;
+    };
+};
+
+zone "corvinal.br" {
+    type master;
+    file "/etc/bind/grifinoria.br";
+    allow-transfer {
+        127.0.0.1;
+    };
+};
+
+zone "hogwarts.br" {
+    type master;
+    file "/etc/bind/grifinoria.br";
     allow-transfer {
         127.0.0.1;
     };

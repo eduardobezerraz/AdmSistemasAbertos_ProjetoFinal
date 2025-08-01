@@ -1,0 +1,25 @@
+;
+; BIND data file for corvinal.br zone
+;
+
+$TTL    604800                                  ; Define o tempo padrão de vida (TTL) dos registros DNS (7 dias)
+
+@       IN      SOA     ns.corvinal.br. root.corvinal.br. (
+                               10               ; Número serial (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (incrementado) (deve ser incrementado a cada modificação)
+                         604800                 ; Refresh: intervalo para servidores secundários verificarem atualizações
+                          86400                 ; Retry: tempo para tentar novamente após falha de atualização
+                        2419200                 ; Expire: tempo para considerar a zona expirada sem contato (28 dias)
+                         604800 )               ; Negative Cache TTL: tempo para cache de respostas negativas (NXDOMAIN)
+
+; ---------- Registros de autoridade ----------
+        IN      NS      ns                      ; Define o servidor de nomes autoritativo para a zona
+ns      IN      A       192.168.0.2            ; IP associado ao servidor de nomes ns.corvinal.br
+
+; ---------- Registros principais ----------
+@       IN      A       192.168.0.2            ; Registro A para o domínio raiz corvinal.br
+www     IN      A       192.168.0.2            ; Registro A para www.corvinal.br
+
+; ---------- Subdomínios (Serviços) ----------
+cms     IN      CNAME   @                       ; cms.corvinal.br aponta para o IP do domínio raiz
+proxy   IN      CNAME   @                       ; proxy.corvinal.br aponta para o IP do domínio raiz
+portal  IN      CNAME   @                       ; portal.corvinal.br aponta para o IP do domínio raiz

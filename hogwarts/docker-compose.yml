@@ -34,6 +34,15 @@ services:
       # Certificados SSL do cliente Sonserina (apenas leitura)
       - ../clientes/sonserina/proxy/ssl/sonserina.br.crt:/etc/nginx/ssl/sonserina.br.crt:ro
       - ../clientes/sonserina/proxy/ssl/sonserina.br.key:/etc/nginx/ssl/sonserina.br.key:ro
+
+      # Certificados SSL do cliente grifinoria (apenas leitura)
+      - ../clientes/grifinoria/proxy/ssl/grifinoria.br.crt:/etc/nginx/ssl/grifinoria.br.crt:ro
+      - ../clientes/grifinoria/proxy/ssl/grifinoria.br.key:/etc/nginx/ssl/grifinoria.br.key:ro
+
+      
+      # Certificados SSL do cliente corvinal (apenas leitura)
+      - ../clientes/corvinal/proxy/ssl/corvinal.br.crt:/etc/nginx/ssl/corvinal.br.crt:ro
+      - ../clientes/corvinal/proxy/ssl/corvinal.br.key:/etc/nginx/ssl/corvinal.br.key:ro
       
       # Configuração do nginx e HTML
       - ./proxy/index.html:/usr/share/nginx/html/index.html:ro
@@ -41,6 +50,8 @@ services:
     networks:
       - hogwartsnet
       - sonserinanet
+      - grifinorianet
+      - corvinalnet
     depends_on:
       - webmail
 
@@ -84,6 +95,11 @@ networks:
     external: true
   sonserinanet:
     external: true
+  grifinorianet:
+    external: true
+  corvinalnet:
+    external: true
+
 
 volumes:
   roundcube_data:

@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+
+  grifinoria_proxy:
+    container_name: grifinoria_proxy
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    ports: 
+      - "8085:80"
+      - "2447:443"
+    networks:
+      - grifinorianet  
+
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - "8084:80"  # Acesso via localhost:8084 (por enquanto que o proxy não ta ativo)
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppassword
+      WORDPRESS_DB_NAME: wpdb
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - grifinorianet
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: wpdb
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+
+  grifinoria_portal:
+    container_name: grifinoria_portal
+    build:
+      context: ./portal
+      dockerfile: Dockerfile
+    ports:
+      - "9090:80"
+    networks:
+      - grifinorianet
+
+networks:
+  hogwartsnet:
+    external: true  # Usa a rede existente
+    name: hogwartsnet
+
+  grifinorianet:
+    external: true  # Usa a rede existente
+    name: grifinorianet
+
+volumes:
+  wordpress_data:
+  db_data:
