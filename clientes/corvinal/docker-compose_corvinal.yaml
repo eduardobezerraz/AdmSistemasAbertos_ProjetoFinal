@@ -12,6 +12,7 @@ services:
       - "2448:443"
     networks:
       - corvinalnet
+      - corvinalbridge
 
   wordpress:
     image: wordpress
@@ -50,9 +51,9 @@ services:
       - corvinalnet
 
 networks:
-  hogwartsnet:
+  corvinalbridge:
     external: true  # Usa a rede existente
-    name: hogwartsnet
+    name: corvinalbridge
 
   corvinalnet:
     external: true  # Usa a rede existente

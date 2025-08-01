@@ -11,7 +11,8 @@ services:
       - "8085:80"
       - "2447:443"
     networks:
-      - grifinorianet  
+      - grifinorianet
+      - grifinoriabridge
 
   wordpress:
     image: wordpress
@@ -50,9 +51,9 @@ services:
       - grifinorianet
 
 networks:
-  hogwartsnet:
+  grifinoriabridge:
     external: true  # Usa a rede existente
-    name: hogwartsnet
+    name: grifinoriabridge
 
   grifinorianet:
     external: true  # Usa a rede existente

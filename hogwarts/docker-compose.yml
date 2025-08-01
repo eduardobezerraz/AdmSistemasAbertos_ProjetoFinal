@@ -49,9 +49,9 @@ services:
       - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - hogwartsnet
-      - sonserinanet
-      - grifinorianet
-      - corvinalnet
+      - sonserinabridge
+      - grifinoriabridge
+      - corvinalbridge
     depends_on:
       - webmail
 
@@ -99,6 +99,14 @@ networks:
     external: true
   corvinalnet:
     external: true
+
+  sonserinabridge:
+      external: true
+  grifinoriabridge:
+      external: true
+  corvinalbridge:
+      external: true    
+    
 
 
 volumes:

@@ -241,24 +241,33 @@ def main(base_dir):
     # Corrige CRLF -> LF antes de usar qualquer arquivo
     fix_line_endings(base_dir)
     
-    # Verifica/cria redes necessárias
+    # Verifica/cria redes isoladas 
     check_create_network("hogwartsnet")
     check_create_network("sonserinanet")
     check_create_network("grifinorianet")
     check_create_network("corvinalnet")
-    
-    # Verifica estrutura de diretórios
-    required_dirs = ["scripts", "hogwarts", "clientes"]
-    for dir_name in required_dirs:
-        if not (base_dir / dir_name).exists():
-            print(f"ERRO: Diretório '{dir_name}' não encontrado em {base_dir}")
-            sys.exit(1)
 
+    # Cria as redes bridge entre o proxy Hogwarts e as casas
+    check_create_network("sonserinabridge")
+    check_create_network("grifinoriabridge")
+    check_create_network("corvinalbridge")
+
+    # Executado o script para gerar certificados SSL
     run_certificate_script(base_dir)
+
+    # Atualiza os arquivos de zona para o ip da interface utilizada
     run_zone_script(base_dir)
+
+    # Inicia os serviços de todos os clientes
     start_client_compose(base_dir)
+
+    # Inicia os serviços do ISP 
     start_main_compose(base_dir)
+
+    # Configura o DNS da interface de rede
     run_dns_config(base_dir)
+
+    # Verifica status dos containers
     show_status()
 
     print("\nInicialização concluída com sucesso!")

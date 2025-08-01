@@ -11,7 +11,8 @@ services:
       - "8082:80"
       - "2443:443"
     networks:
-      - sonserinanet  
+      - sonserinanet
+      - sonserinabridge
 
   sonserina_portal:
     container_name: sonserina_portal
@@ -101,9 +102,9 @@ services:
       
 
 networks:
-  hogwartsnet:
+  sonserinabridge:
     external: true  # Usa a rede existente
-    name: hogwartsnet
+    name: sonserinabridge
 
   sonserinanet:
     external: true  # Usa a rede existente
