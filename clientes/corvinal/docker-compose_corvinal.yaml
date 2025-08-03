@@ -39,6 +39,8 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+     - corvinalnet
 
   corvinal_portal:
     container_name: corvinal_portal

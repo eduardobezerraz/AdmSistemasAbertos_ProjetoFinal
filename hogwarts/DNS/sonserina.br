@@ -14,10 +14,10 @@ $TTL    604800                                ; Define o tempo padrão de vida (
 
 ; ---------- Registros de autoridade ----------
 @       IN      NS      ns.sonserina.br.      ; Define o nameserver (NS) responsável pela zona
-ns      IN      A       192.168.0.2         ; Define o endereço IP do servidor de nomes "ns.sonserina.br"
+ns      IN      A       192.168.0.12         ; Define o endereço IP do servidor de nomes "ns.sonserina.br"
 
 ; ---------- Registro A principal ----------
-@       IN      A       192.168.0.2         ; Define o IP principal do servidor em que o serviço está hospedado
+@       IN      A       192.168.0.12         ; Define o IP principal do servidor em que o serviço está hospedado
 
 ; ---------- Subdomínios ----------
 portal      IN      CNAME   @                 ; "portal.sonserina.br" aponta para o mesmo IP de "@"

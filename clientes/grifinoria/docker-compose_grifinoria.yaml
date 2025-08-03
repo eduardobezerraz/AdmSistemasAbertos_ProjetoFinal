@@ -39,6 +39,8 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+     - grifinorianet
 
   grifinoria_portal:
     container_name: grifinoria_portal

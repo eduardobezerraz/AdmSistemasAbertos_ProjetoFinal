@@ -13,11 +13,11 @@ $TTL    604800                                  ; Define o tempo padrão de vida
 
 ; ---------- Registros de autoridade ----------
         IN      NS      ns                      ; Define o servidor de nomes autoritativo para a zona
-ns      IN      A       192.168.0.2            ; IP associado ao servidor de nomes ns.grifinoria.br
+ns      IN      A       192.168.0.12            ; IP associado ao servidor de nomes ns.grifinoria.br
 
 ; ---------- Registros principais ----------
-@       IN      A       192.168.0.2            ; Registro A para o domínio raiz grifinoria.br
-www     IN      A       192.168.0.2            ; Registro A para www.grifinoria.br
+@       IN      A       192.168.0.12            ; Registro A para o domínio raiz grifinoria.br
+www     IN      A       192.168.0.12            ; Registro A para www.grifinoria.br
 
 ; ---------- Subdomínios (Serviços) ----------
 cms     IN      CNAME   @                       ; hotsite.grifinoria.br aponta para o IP do domínio raiz
