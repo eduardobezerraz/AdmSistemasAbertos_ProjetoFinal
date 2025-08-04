@@ -38,8 +38,8 @@ Este projeto tem como objetivo a implementação de uma **infraestrutura para Pr
 | Objetivo | Status |
 |----------|:--------:|
 | Desenvolver uma infraestrutura baseada em Docker para ISPs | [![Concluído](https://img.shields.io/badge/-Concluído-success)] |
-| Isolar serviços por cliente usando Docker Networks e ACLs | [![Em Andamento](https://img.shields.io/badge/-Em_Andamento-yellow)] |
-| Aplicar criptografia com HTTPS e STARTTLS | [![Bug](https://img.shields.io/badge/-Bug-critical)] |
+| Isolar serviços por cliente usando Docker Networks e ACLs | [![Concluído](https://img.shields.io/badge/-Concluído-success)] |
+| Aplicar criptografia com HTTPS| [![Concluído](https://img.shields.io/badge/-Concluído-success)] |
 | Criar testes automatizados e documentação em vídeo | [![Em Andamento](https://img.shields.io/badge/-Em_Andamento-yellow)] |
 | Validar desempenho com métricas (latência, disponibilidade) | [![Não Iniciado](https://img.shields.io/badge/-Não_Iniciado-lightgrey)] |
 | Cumprir entregas parciais em 4 sprints (8 semanas) | [![Em Andamento](https://img.shields.io/badge/-Em_Andamento-yellow)] |
@@ -57,202 +57,262 @@ Abaixo, a representação da arquitetura da rede do ISP implementada no projeto:
 ## 📂 Explicação dos Diretórios do Projeto
 
 ### **[📁 clientes/](./clientes)**
-Diretório que contém configurações específicas para cada cliente do provedor. Cada cliente possui:
-- `hotsite/`: Site institucional básico
-- `portal/`: Área de autoatendimento
-- `proxy/`: Configurações de proxy dedicado
+Contém configurações e serviços dedicados para cada cliente do provedor (`corvinal/`, `grifinoria/`, `sonserina/`).  
+Cada cliente possui:
+- `hotsite/` *(apenas em sonserina)*: Site institucional simples.
+- `portal/`: Área de autoatendimento web.
+- `proxy/`: Configurações de proxy reverso (Nginx) com certificados SSL dedicados.
+- `scripts/`: Automação de geração de certificados.
+
+Arquivo principal por cliente:
+- `docker-compose_<cliente>.yaml`: Orquestração Docker dos serviços do cliente.
+
+---
+
+### **[📁 hogwarts/](./hogwarts)**
+Infraestrutura central do provedor (ISP). Inclui:
+
+- **[DNS/](./hogwarts/DNS)**  
+  Servidor DNS (Bind9):  
+  - Arquivos de zona (`corvinal.br`, `grifinoria.br`, `sonserina.br`, `hogwarts.br`)  
+  - `named.conf.local`: Definição das zonas DNS  
+  - `Dockerfile`: Configuração do container  
+
+- **[email/](./hogwarts/email)**  
+  Implementação do serviço de e-mail:  
+  - `postfix/`: Configuração SMTP  
+  - `dovecot/`: Autenticação IMAP/POP3  
+  - `conf.d/`: Ajustes adicionais  
+  - `scripts/`: Script de inicialização (`init.sh`)  
+
+- **[Portal/](./hogwarts/Portal)**  
+  Portal institucional do ISP.  
+  - `Dockerfile` e `index.html`  
+
+- **[proxy/](./hogwarts/proxy)**  
+  Proxy reverso (Nginx) central:  
+  - `default.conf`: Configuração principal  
+  - `ssl/`: Certificados digitais (hogwarts.br e `dhparam.pem`)  
+
+- **[webmail/](./hogwarts/webmail)**  
+  Interface Roundcube para acesso aos e-mails:  
+  - `config/config.inc.php`: Configuração principal  
 
 Arquivo principal:
-- `docker-compose-clientes.yaml`: Configuração Docker para serviços dos clientes
+- `docker-compose.yml`: Orquestração central dos serviços do ISP.
 
-### **[📁 DNS/](./DNS)**
-Configurações do servidor DNS (Bind9) contendo:
-- `Dockerfile`: Configuração do container
-- `named.conf.local`: Definição das zonas DNS
-- `sonserina.br`: Arquivo de zona DNS principal
+---
 
 ### **[📁 docs/](./docs)**
-Armazena toda a documentação do projeto:
-- Diagramas de arquitetura
-- Fluxogramas dos scripts
-- Documentação complementar
+Documentação do projeto:
+- `arquitetura-isp.png`: Diagrama da arquitetura do provedor
+- `fluxo_startup.png`: Fluxo de inicialização
+- `fluxo_shutdown.png`: Fluxo de desligamento
 
-### **[📁 email/](./email)**
-Implementação completa de serviço de e-mail com:
-- `Dockerfile`: Configuração principal
-- `conf.d/`: Configurações adicionais
-- `dovecot/`: Autenticação IMAP/POP3
-- `postfix/`: Servidor SMTP
-- `scripts/`: Scripts auxiliares
-
-### **[📁 Portal/](./Portal)**
-Portal institucional do provedor contendo:
-- `Dockerfile`: Configuração do container
-- `index.html`: Página web principal
-
-### **[📁 proxy/](./proxy)**
-Configurações do proxy reverso (Nginx) com:
-- Arquivos de configuração principal
-- Páginas de erro
-- `ssl/`: Certificados digitais
-  - Certificados raiz
-  - Certificados por cliente
+---
 
 ### **[📁 scripts/](./scripts)**
-Scripts de automação para:
-- Configuração de DNS
-- Gerenciamento de rede
-- Geração de certificados SSL
-- Ativação/desativação de serviços
+Scripts gerais de automação para todo o projeto:
+- `atualizar_zona.py`: Atualização de zonas DNS
+- `DNSconfig.py`: Configuração do Bind9
+- `EnableDHCP_Ipv6.py`: Ativação de DHCP IPv6
+- `fix_line_endings.py`: Correção de finais de linha
+- `gerar_certificado.py`: Geração de certificados SSL genéricos
 
-### **[📁 webmail/](./webmail)**
-Interface web para e-mails (Roundcube) com:
-- `config/`: Configurações de conexão
-  - `config.inc.php`: Configuração principal
+---
 
 ### **Arquivos Raiz Principais**
-- `docker-compose.yml`: Orquestração central
-- `startup.ps1`/`shutdown.ps1`: Scripts de controle
-- `README.md`: Documentação principal
+- `startup.py` / `shutdown.py`: Scripts de controle dos containers
+- `README.md`: Documentação principal do projeto
+
 
 ## 📂 Estrutura Completa do Projeto em fluxograma
 ```mermaid
 flowchart LR
-    root["📁 / (root)"] --> gitignore[".gitignore"]
-    root --> compose["docker-compose.yml"]
-    root --> estrutura["estrutura.txt"]
+    root["📁 / (root)"]
     root --> readme["README.md"]
-    root --> shutdown["shutdown.ps1"]
-    root --> startup["startup.ps1"]
-    
+    root --> shutdown["shutdown.py"]
+    root --> startup["startup.py"]
+
+    %% Clientes
     root --> clientes["📁 clientes"]
-    clientes --> compose_clientes["docker-compose-clientes.yaml"]
-    clientes --> cliente1["📁 cliente1"]
-    cliente1 --> hotsite["📁 hotsite"]
-    hotsite --> hotsite_dockerfile["Dockerfile"]
-    hotsite --> hotsite_index["index.html"]
-    cliente1 --> portal["📁 portal"]
-    portal --> portal_dockerfile["Dockerfile"]
-    portal --> portal_index["index.html"]
-    cliente1 --> proxy["📁 proxy"]
-    proxy --> proxy_conf["default.conf"]
-    proxy --> proxy_dockerfile["Dockerfile"]
-    
-    root --> dns["📁 DNS"]
-    dns --> dns_dockerfile["Dockerfile"]
-    dns --> named_conf["named.conf.local"]
-    dns --> sonserina_br["sonserina.br"]
-    
+
+    %% Corvinal
+    clientes --> corvinal["📁 corvinal"]
+    corvinal --> corvinal_compose["docker-compose_corvinal.yaml"]
+    corvinal --> corvinal_portal["📁 portal"]
+    corvinal_portal --> corvinal_portal_docker["Dockerfile"]
+    corvinal_portal --> corvinal_portal_index["index.html"]
+    corvinal --> corvinal_proxy["📁 proxy"]
+    corvinal_proxy --> corvinal_proxy_conf["default.conf"]
+    corvinal_proxy --> corvinal_proxy_docker["Dockerfile"]
+    corvinal_proxy --> corvinal_ssl["📁 ssl"]
+    corvinal_ssl --> corvinal_crt["corvinal.br.crt"]
+    corvinal_ssl --> corvinal_csr["corvinal.br.csr"]
+    corvinal_ssl --> corvinal_key["corvinal.br.key"]
+    corvinal --> corvinal_scripts["📁 scripts"]
+    corvinal_scripts --> corvinal_cert["gerar_certificado.py"]
+
+    %% Grifinoria
+    clientes --> grifinoria["📁 grifinoria"]
+    grifinoria --> grifinoria_compose["docker-compose_grifinoria.yaml"]
+    grifinoria --> grifinoria_portal["📁 portal"]
+    grifinoria_portal --> grifinoria_portal_docker["Dockerfile"]
+    grifinoria_portal --> grifinoria_portal_index["index.html"]
+    grifinoria --> grifinoria_proxy["📁 proxy"]
+    grifinoria_proxy --> grifinoria_proxy_conf["default.conf"]
+    grifinoria_proxy --> grifinoria_proxy_docker["Dockerfile"]
+    grifinoria_proxy --> grifinoria_ssl["📁 ssl"]
+    grifinoria_ssl --> grifinoria_crt["grifinoria.br.crt"]
+    grifinoria_ssl --> grifinoria_csr["grifinoria.br.csr"]
+    grifinoria_ssl --> grifinoria_key["grifinoria.br.key"]
+    grifinoria --> grifinoria_scripts["📁 scripts"]
+    grifinoria_scripts --> grifinoria_cert["gerar_certificado.py"]
+
+    %% Sonserina
+    clientes --> sonserina["📁 sonserina"]
+    sonserina --> sonserina_compose["docker-compose_sonserina.yaml"]
+    sonserina --> sonserina_hotsite["📁 hotsite"]
+    sonserina_hotsite --> sonserina_hotsite_docker["Dockerfile"]
+    sonserina_hotsite --> sonserina_hotsite_index["index.html"]
+    sonserina --> sonserina_portal["📁 portal"]
+    sonserina_portal --> sonserina_portal_docker["Dockerfile"]
+    sonserina_portal --> sonserina_portal_index["index.html"]
+    sonserina --> sonserina_proxy["📁 proxy"]
+    sonserina_proxy --> sonserina_proxy_conf["default.conf"]
+    sonserina_proxy --> sonserina_proxy_docker["Dockerfile"]
+    sonserina_proxy --> sonserina_proxy_index["index.html"]
+    sonserina_proxy --> sonserina_ssl["📁 ssl"]
+    sonserina_ssl --> sonserina_crt["sonserina.br.crt"]
+    sonserina_ssl --> sonserina_csr["sonserina.br.csr"]
+    sonserina_ssl --> sonserina_key["sonserina.br.key"]
+    sonserina_ssl --> corvinal_ref_crt["corvinal.br.crt"]
+    sonserina_ssl --> corvinal_ref_key["corvinal.br.key"]
+    sonserina_ssl --> grifinoria_ref_crt["grifinoria.br.crt"]
+    sonserina_ssl --> grifinoria_ref_key["grifinoria.br.key"]
+    sonserina --> sonserina_scripts["📁 scripts"]
+    sonserina_scripts --> sonserina_cert["gerar_certificado.py"]
+
+    %% Docs
     root --> docs["📁 docs"]
-    docs --> arquitetura["arquitetura-isp.png"]
-    docs --> shutdown_diag["fluxo_shutdown.png"]
-    docs --> startup_diag["fluxo_startup.png"]
-    
-    root --> email["📁 email"]
-    email --> email_dockerfile["Dockerfile"]
+    docs --> arq["arquitetura-isp.png"]
+    docs --> fluxo_start["fluxo_startup.png"]
+    docs --> fluxo_shutdown["fluxo_shutdown.png"]
+
+    %% Hogwarts
+    root --> hogwarts["📁 hogwarts"]
+    hogwarts --> hogwarts_compose["docker-compose.yml"]
+
+    %% DNS
+    hogwarts --> dns["📁 DNS"]
+    dns --> dns_docker["Dockerfile"]
+    dns --> dns_named["named.conf.local"]
+    dns --> dns_corvinal["corvinal.br"]
+    dns --> dns_grifinoria["grifinoria.br"]
+    dns --> dns_hogwarts["hogwarts.br"]
+    dns --> dns_sonserina["sonserina.br"]
+
+    %% Email
+    hogwarts --> email["📁 email"]
+    email --> email_docker["Dockerfile"]
     email --> confd["📁 conf.d"]
     confd --> master_conf["10-master.conf"]
     email --> dovecot["📁 dovecot"]
     dovecot --> dovecot_conf["dovecot.conf"]
     email --> postfix["📁 postfix"]
     postfix --> postfix_conf["main.cf"]
-    email --> scripts["📁 scripts"]
-    scripts --> init_script["init.sh"]
-    
-    root --> portal_dir["📁 Portal"]
-    portal_dir --> portal_dockerfile2["Dockerfile"]
-    portal_dir --> portal_index2["index.html"]
-    
-    root --> proxy_dir["📁 proxy"]
-    proxy_dir --> error_page["404.html"]
-    proxy_dir --> proxy_conf2["default.conf"]
-    proxy_dir --> proxy_dockerfile2["Dockerfile"]
-    proxy_dir --> proxy_index["index.html"]
-    proxy_dir --> ssl["📁 ssl"]
-    ssl --> portal_crt["portal.cliente1.crt"]
-    ssl --> portal_key["portal.cliente1.key"]
-    ssl --> sonserina_crt["sonserina.crt"]
-    ssl --> sonserina_key["sonserina.key"]
-    
-    root --> scripts_dir["📁 scripts"]
-    scripts_dir --> dns_config["DNSconfig.ps1"]
-    scripts_dir --> dhcp_config["EnableDHCP_Ipv6.ps1"]
-    scripts_dir --> ssl_ps1["generate-ssl.ps1"]
-    scripts_dir --> ssl_sh["generate-ssl.sh"]
-    
-    root --> webmail["📁 webmail"]
-    webmail --> config["📁 config"]
-    config --> config_inc["config.inc.php"]
+    email --> email_scripts["📁 scripts"]
+    email_scripts --> init_sh["init.sh"]
+
+    %% Portal
+    hogwarts --> hogwarts_portal["📁 Portal"]
+    hogwarts_portal --> hogwarts_portal_docker["Dockerfile"]
+    hogwarts_portal --> hogwarts_portal_index["index.html"]
+
+    %% Proxy
+    hogwarts --> hogwarts_proxy["📁 proxy"]
+    hogwarts_proxy --> hogwarts_proxy_conf["default.conf"]
+    hogwarts_proxy --> hogwarts_proxy_docker["Dockerfile"]
+    hogwarts_proxy --> hogwarts_proxy_index["index.html"]
+    hogwarts_proxy --> proxy_ssl["📁 ssl"]
+    proxy_ssl --> hogwarts_crt["hogwarts.br.crt"]
+    proxy_ssl --> hogwarts_csr["hogwarts.br.csr"]
+    proxy_ssl --> hogwarts_key["hogwarts.br.key"]
+    proxy_ssl --> dhparam["dhparam.pem"]
+
+    %% Webmail
+    hogwarts --> webmail["📁 webmail"]
+    webmail --> webmail_docker["Dockerfile"]
+    webmail --> webmail_config["📁 config"]
+    webmail_config --> webmail_conf["config.inc.php"]
+
+    %% Scripts
+    root --> scripts["📁 scripts"]
+    scripts --> atualizar_zona["atualizar_zona.py"]
+    scripts --> dnsconfig["DNSconfig.py"]
+    scripts --> enable_dhcp["EnableDHCP_Ipv6.py"]
+    scripts --> fix_line["fix_line_endings.py"]
+    scripts --> gerar_cert["gerar_certificado.py"]
+
 ```
 ---
 
-## Pré-requisitos
+## Pré-requisitos:
 
-- Docker e Docker Compose instalados
-  - [Instruções para Windows](https://docs.docker.com/desktop/install/windows-install/)
-  - [Instruções para Linux](https://docs.docker.com/engine/install/)
-- PowerShell (Windows) ou PowerShell Core (Linux/Mac)
-- Acesso de administrador/root
+- [Docker](https://docs.docker.com/get-docker/) e [Docker Compose](https://docs.docker.com/compose/install/) instalados  
+- [Python 3](https://www.python.org/downloads/) instalado (versão 3.8 ou superior)  
+- Acesso de administrador/root  
 
-## Como Executar
+## Como Executar:
 
+1. Abra um terminal com privilégios administrativos (PowerShell, CMD).  
 
-1. Abra o PowerShell com privilégios administrativos (Executar como Administrador).
-
-2. Navegue até o diretório onde os scripts estão salvos:
+2. Navegue até o diretório do projeto:  
 
 3. Execute o script de inicialização com o comando: 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\startup.ps1
+```bash
+python3 startup.py
 ```
 
 4. Execute o script de finalização com o comando: 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\shutdown.ps1
+```bash
+python3 shutdown.py
 ```
+Obs: Os scripts foram feitos para serem utilizados em computadores windows.
+
 ## Fluxograma da lógica do script de inicialização:
 ```mermaid
+%%{init: {'theme':'dark', 'themeVariables': { 'fontSize': '12px' }, 'flowchart': { 'diagramPadding': 1 }}}%%
 flowchart TD
-    A[Início: startup.ps1] --> B{Executando como Admin?}
-    B -->|Sim| C[Verificar certificados SSL]
+    A[Início: startup.py] --> B{Executando como Admin?}
     B -->|Não| Z[ERRO: Encerrar]
+    B -->|Sim| C[Verificar instalação do Docker]
 
-    C --> D{Certificados existem?}
-    D -->|Não| E[Executar generate-ssl.ps1]
-    E --> F[Gerar ceritificados .crt e .key]
-    F --> G[Instalar certificado?]
-    G -->|Sim| H[Adicionar ao repositório de confiança]
-    G -->|Não| I[Pular instalação]
-    D -->|Sim| I
+    C --> D[Corrigir finais de linha CRLF para LF]
+    D --> E[Verificar/criar redes Docker principais e bridges]
 
-    I --> J[Iniciar containers Docker]
-    J --> K[docker-compose up --force-recreate]
-    K --> L{Sucesso?}
-    L -->|Não| M[ERRO: Encerrar]
-    L -->|Sim| N[Configurar DNS via DNSconfig.ps1]
-
-    N --> O[Definir IP local como DNS]
-    O --> P[Desativar IPv6]
-    P --> Q[Exibir status dos containers]
-    Q --> R[Finalizado!]
+    E --> F[Verificar ou Gerar certificados SSL]
+    F --> G[Atualizar arquivos de zona DNS]
+    G --> H[Iniciar containers dos clientes]
+    H --> I[Iniciar containers principais Hogwarts]
+    I --> J[Configurar DNS da interface de rede]
+    J --> K[Exibir status dos containers]
+    K --> L[Finalizado com sucesso!]
 ```
 
 ## Fluxograma da lógica do script de finalização:
 ```mermaid
+%%{init: {'theme':'dark', 'themeVariables': { 'fontSize': '12px' }, 'flowchart': { 'diagramPadding': 5 }}}%%
 flowchart TD
-    A[Início: shutdown.ps1] --> B{Executando como Admin?}
-    B -->|Sim| C[Parar containers Docker]
+    A[Início: shutdown.py] --> B{Sistema é Windows?}
     B -->|Não| Z[ERRO: Encerrar]
-
-    C --> D{docker-compose down\nsucesso?}
-    D -->|Sim| E[Executar EnableDHCP_Ipv6.ps1]
-    D -->|Não| F[AVISO: Erro ao parar containers]
-
-    E --> G{DHCP/IPv6 reativados?}
-    G -->|Sim| H[Exibir mensagem de sucesso]
-    G -->|Não| I[AVISO: Erro no script DHCP]
-
-    H --> J[Fim: Todos serviços desligados]
-    F --> J
-    I --> J
+    B -->|Sim| C{Executando como Admin?}
+    C -->|Não| Z
+    C -->|Sim| D[Parar containers principais com docker-compose down]
+    D --> E[Parar containers dos clientes usando docker-compose down nos clientes]
+    E --> F{Script EnableDHCP_Ipv6.py existe?}
+    F -->|Sim| G[Executar script para reativar DHCP]
+    F -->|Não| H[Pular reativação DHCP]
+    G --> I[Finalizar com sucesso]
+    H --> I
 ```
